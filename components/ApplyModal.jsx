@@ -12,16 +12,16 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  IconButton,
 } from "@mui/material";
-import { Formik, Form, Field } from "formik";
+import CloseIcon from "@mui/icons-material/Close";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { ThemeProvider } from "@mui/system";
-import theme from "../theme";
 import { getStates } from "../helpers/getStates";
 
 const ApplyModal = ({ open, onClose }) => {
   const initialValues = {
-    firstName: "Jay",
+    firstName: "",
     lastName: "",
     email: "",
     phone: "",
@@ -30,7 +30,7 @@ const ApplyModal = ({ open, onClose }) => {
     city: "",
     state: "",
     zipCode: "",
-    debtRange: "Less than 50,000",
+    debtRange: "",
     agreeTerms: false,
   };
 
@@ -40,105 +40,121 @@ const ApplyModal = ({ open, onClose }) => {
       .min(2, "First Name must be at least 2 characters")
       .max(50, "First Name must be less than 50 characters")
       .required("First Name is required"),
-
     lastName: Yup.string()
       .trim()
       .min(2, "Last Name must be at least 2 characters")
       .max(50, "Last Name must be less than 50 characters")
       .required("Last Name is required"),
-
     email: Yup.string()
       .trim()
       .email("Invalid email address")
       .required("Email is required"),
-
     phone: Yup.string()
       .matches(
         /^(\+1\s?)?(\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}$/,
         "Invalid phone number format (e.g., +1 (123) 456-7890)"
       )
       .required("Phone number is required"),
-
     address: Yup.string()
       .trim()
       .min(5, "Address must be at least 5 characters")
       .max(100, "Address must be less than 100 characters")
       .required("Address is required"),
-
-    aptSuite: Yup.string()
-      .trim()
-      .max(10, "Apt/Suite must be less than 10 characters")
-      .nullable(),
-
     city: Yup.string()
       .trim()
       .min(2, "City must be at least 2 characters")
       .max(50, "City must be less than 50 characters")
       .required("City is required"),
-
-    state: Yup.string()
-      .trim()
-      .length(2, "State must be a valid 2-letter abbreviation")
-      .required("State is required"),
-
+    state: Yup.string().required("State is required"),
     zipCode: Yup.string()
       .matches(
         /^\d{5}(-\d{4})?$/,
         "Invalid ZIP code format (e.g., 12345 or 12345-6789)"
       )
       .required("ZIP Code is required"),
-
     debtRange: Yup.string()
       .oneOf(
         ["<50000", "50000-75000", "75000-100000", ">100000"],
         "Invalid debt range selection"
       )
       .required("Debt range is required"),
-
-    agreeTerms: Yup.boolean().oneOf(
-      [true],
-      "You must agree to the terms and conditions"
-    ),
+    agreeTerms: Yup.boolean()
+      .oneOf([true], "You must agree to the terms and conditions")
+      .required("You must agree to the terms and conditions"),
   });
 
-  const modalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    p: 4,
-    width: "auto",
-    maxWidth: "600px",
+  const handleSubmit = (values, { setSubmitting }) => {
+    console.log("Form Submitted Successfully:", values);
+    alert("Form Submitted Successfully");
+    // Simulate API call delay
+    setTimeout(() => {
+      setSubmitting(false);
+      onClose(); // Assuming onClose is passed to close the modal
+    }, 500);
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Modal
-        open={open}
-        onClose={onClose}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
+    <Modal open={open} onClose={onClose} aria-labelledby="modal-title">
+      <Box
+        onClick={(e) => e.stopPropagation()}
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          bgcolor: "white",
+          boxShadow: 24,
+          borderRadius: "12px",
+          width: "100%",
+          maxWidth: "600px",
+        }}
       >
-        <Box sx={modalStyle}>
-          <Typography
-            id="modal-title"
-            variant="h6"
-            component="h2"
-            sx={{ mb: 2, textAlign: "center" }}
-          >
-            Fill out the form
+        {/* Modal Header with Close Button */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            bgcolor: "#000000",
+            color: "white",
+            p: 2,
+            borderTopLeftRadius: "12px",
+            borderTopRightRadius: "12px",
+          }}
+        >
+          <Typography variant="h6" sx={{ color: "var(--color-secondary)" }}>
+            Apply Now
           </Typography>
+          <IconButton onClick={onClose} sx={{ color: "white" }}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+        {/* Modal Content */}
+        <Box sx={{ p: 3 }}>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={(values) => {
-              console.log("Form Submitted:", values);
-            }}
+            enableReinitialize={false}
+            validateOnChange={true}
+            validateOnMount={true}
+            validateOnBlur={true}
           >
-            {({ values, errors, touched, handleChange, handleBlur }) => (
-              <Form>
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              isSubmitting,
+              isValid,
+              setSubmitting,
+              dirty,
+            }) => (
+              <Form
+                onSubmit={() =>
+                  handleSubmit(values, isSubmitting, setSubmitting)
+                }
+              >
                 <Grid2 container spacing={2}>
                   <Grid2 item xs={6}>
                     <TextField
@@ -189,61 +205,74 @@ const ApplyModal = ({ open, onClose }) => {
                     />
                   </Grid2>
                   <Grid2 item xs={6}>
-                    <Field
-                      as={TextField}
+                    <TextField
                       name="address"
                       label="Address"
                       fullWidth
-                    />
-                  </Grid2>
-                  <Grid2 item xs={6}>
-                    <Field
-                      as={TextField}
-                      name="aptSuite"
-                      label="Apt/Suite"
-                      fullWidth
-                    />
-                  </Grid2>
-                  <Grid2 item xs={6}>
-                    <Field as={TextField} name="city" label="City" fullWidth />
-                  </Grid2>
-                  <FormControl fullWidth>
-                    <InputLabel id="state">State</InputLabel>
-                    <Select
-                      labelId="state"
-                      name="state"
-                      value={values.state}
+                      value={values.address}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                    >
-                      {getStates().map((state) => (
-                        <MenuItem key={state.value} value={state.value}>
-                          {state.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-
+                      error={touched.address && Boolean(errors.address)}
+                      helperText={touched.address && errors.address}
+                    />
+                  </Grid2>
                   <Grid2 item xs={6}>
-                    <Field
-                      as={TextField}
+                    <TextField
+                      name="city"
+                      label="City"
+                      fullWidth
+                      value={values.city}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.city && Boolean(errors.city)}
+                      helperText={touched.city && errors.city}
+                    />
+                  </Grid2>
+                  <Grid2 item xs={6}>
+                    <TextField
                       name="zipCode"
                       label="Zip Code"
                       fullWidth
+                      value={values.zipCode}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={touched.zipCode && Boolean(errors.zipCode)}
+                      helperText={touched.zipCode && errors.zipCode}
                     />
                   </Grid2>
-                  <Grid2 item xs={12}>
-                    <FormControl
-                      fullWidth
-                      error={touched.debtRange && Boolean(errors.debtRange)}
-                    >
-                      <InputLabel id="debtRange-label">Debt Range</InputLabel>
+
+                  {/* State Dropdown */}
+                  <Grid2 item xs={6}>
+                    <FormControl fullWidth>
+                      <InputLabel>State</InputLabel>
                       <Select
-                        labelId="debtRange-label"
+                        name="state"
+                        value={values.state}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.state && Boolean(errors.state)}
+                        helperText={touched.state && errors.state}
+                      >
+                        {getStates().map((state) => (
+                          <MenuItem key={state.value} value={state.value}>
+                            {state.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid2>
+
+                  {/* Debt Range Dropdown */}
+                  <Grid2 item xs={6}>
+                    <FormControl fullWidth>
+                      <InputLabel>Debt Range</InputLabel>
+                      <Select
                         name="debtRange"
                         value={values.debtRange}
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        error={touched.debtRange && Boolean(errors.debtRange)}
+                        helperText={touched.debtRange && errors.debtRange}
                       >
                         <MenuItem value="<50000">Less than 50,000</MenuItem>
                         <MenuItem value="50000-75000">50,000 - 75,000</MenuItem>
@@ -254,13 +283,9 @@ const ApplyModal = ({ open, onClose }) => {
                           Greater than 100,000
                         </MenuItem>
                       </Select>
-                      {touched.debtRange && errors.debtRange && (
-                        <Typography color="error" variant="caption">
-                          {errors.debtRange}
-                        </Typography>
-                      )}
                     </FormControl>
                   </Grid2>
+
                   <Grid2 item xs={12}>
                     <FormControlLabel
                       control={
@@ -269,19 +294,31 @@ const ApplyModal = ({ open, onClose }) => {
                           checked={values.agreeTerms}
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          error={
+                            touched.agreeTerms && Boolean(errors.agreeTerms)
+                          }
+                          helperText={touched.agreeTerms && errors.agreeTerms}
                         />
                       }
                       label="I agree to the Terms and Conditions"
                     />
-                    {touched.agreeTerms && errors.agreeTerms && (
-                      <Typography color="error" variant="caption">
-                        {errors.agreeTerms}
-                      </Typography>
-                    )}
                   </Grid2>
-                  <Grid2 item xs={12} sx={{ mt: 2, textAlign: "center" }}>
-                    <Button type="submit" variant="contained" color="primary">
-                      Submit
+
+                  <Grid2
+                    item
+                    xs={12}
+                    sx={{ display: "flex", justifyContent: "center" }}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        bgcolor: "var(--color-secondary)",
+                        color: "white",
+                      }}
+                      disabled={!isValid || !dirty || isSubmitting}
+                    >
+                      {isSubmitting ? "Submitting..." : "Submit"}
                     </Button>
                   </Grid2>
                 </Grid2>
@@ -289,8 +326,8 @@ const ApplyModal = ({ open, onClose }) => {
             )}
           </Formik>
         </Box>
-      </Modal>
-    </ThemeProvider>
+      </Box>
+    </Modal>
   );
 };
 
