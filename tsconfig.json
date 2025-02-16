@@ -1,0 +1,39 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES2020",
+        "outDir": "./dist",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "baseUrl": "./",
+        "paths": {
+            "*": [
+                "node_modules/*"
+            ]
+        },
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "esnext"
+        ],
+        "allowJs": true, // Allows JavaScript files to coexist with TypeScript
+        "noEmit": true, // No output files (used by Next.js)
+        "incremental": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve" // Preserves JSX for Next.js
+    },
+    "include": [
+        "next-env.d.ts", // Next.js-specific types
+        "**/*.ts", // Include all TypeScript files
+        "**/*.tsx", // Include all TypeScript React files
+        "temporal/**/*" // Include everything inside the `temporal` folder
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.test.ts", // Exclude test files, if any
+        "dist" // Exclude the output directory
+    ]
+}

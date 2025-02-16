@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --color-primary: #E0AC47;
+    --color-secondary: #E6D193;
+    --color-tertiary: #E0AC47;
+    --color-background: #E6D193;
+    --color-text: #5C4F3C;
+    /* Text color */
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
+/* Example button style using your color palette */
+button {
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+}
+
+button:hover {
+    background-color: var(--color-secondary);
+}

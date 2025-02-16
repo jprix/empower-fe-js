@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  temporal:
+    image: temporalio/auto-setup:latest
+    ports:
+      - "7233:7233" # Temporal default port
+    environment:
+      - TEMPORAL_BROADCAST_ADDRESS=temporal
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
