@@ -13,7 +13,6 @@ import Header from "../components/Header";
 import Verifications from "../components/Verifications";
 
 export default function Account() {
-  const { defaultProvider } = useRpcProviders(evmProvidersSelector); // Get the EVM provider
   const [selectedCredential, setSelectedCredential] = useState("");
   const [currentAccount, setCurrentAccount] = useState({});
   const [balance, setBalance] = useState(null);
