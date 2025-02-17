@@ -5,7 +5,7 @@ import {
   Typography,
   TextField,
   Button,
-  Grid2,
+  Grid,
   Checkbox,
   FormControlLabel,
   Select,
@@ -155,8 +155,8 @@ const ApplyModal = ({ open, onClose }) => {
                   handleSubmit(values, isSubmitting, setSubmitting)
                 }
               >
-                <Grid2 container spacing={2}>
-                  <Grid2 item xs={6}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
                     <TextField
                       name="firstName"
                       label="First Name"
@@ -167,8 +167,8 @@ const ApplyModal = ({ open, onClose }) => {
                       error={touched.firstName && Boolean(errors.firstName)}
                       helperText={touched.firstName && errors.firstName}
                     />
-                  </Grid2>
-                  <Grid2 item xs={6}>
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextField
                       name="lastName"
                       label="Last Name"
@@ -179,8 +179,8 @@ const ApplyModal = ({ open, onClose }) => {
                       error={touched.lastName && Boolean(errors.lastName)}
                       helperText={touched.lastName && errors.lastName}
                     />
-                  </Grid2>
-                  <Grid2 item xs={6}>
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextField
                       name="phone"
                       label="Phone"
@@ -191,8 +191,8 @@ const ApplyModal = ({ open, onClose }) => {
                       error={touched.phone && Boolean(errors.phone)}
                       helperText={touched.phone && errors.phone}
                     />
-                  </Grid2>
-                  <Grid2 item xs={6}>
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextField
                       name="email"
                       label="Email"
@@ -203,8 +203,8 @@ const ApplyModal = ({ open, onClose }) => {
                       error={touched.email && Boolean(errors.email)}
                       helperText={touched.email && errors.email}
                     />
-                  </Grid2>
-                  <Grid2 item xs={6}>
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextField
                       name="address"
                       label="Address"
@@ -215,8 +215,8 @@ const ApplyModal = ({ open, onClose }) => {
                       error={touched.address && Boolean(errors.address)}
                       helperText={touched.address && errors.address}
                     />
-                  </Grid2>
-                  <Grid2 item xs={6}>
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextField
                       name="city"
                       label="City"
@@ -227,8 +227,8 @@ const ApplyModal = ({ open, onClose }) => {
                       error={touched.city && Boolean(errors.city)}
                       helperText={touched.city && errors.city}
                     />
-                  </Grid2>
-                  <Grid2 item xs={6}>
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextField
                       name="zipCode"
                       label="Zip Code"
@@ -239,10 +239,10 @@ const ApplyModal = ({ open, onClose }) => {
                       error={touched.zipCode && Boolean(errors.zipCode)}
                       helperText={touched.zipCode && errors.zipCode}
                     />
-                  </Grid2>
+                  </Grid>
 
                   {/* State Dropdown */}
-                  <Grid2 item xs={6}>
+                  <Grid item xs={6}>
                     <FormControl fullWidth>
                       <InputLabel>State</InputLabel>
                       <Select
@@ -260,10 +260,10 @@ const ApplyModal = ({ open, onClose }) => {
                         ))}
                       </Select>
                     </FormControl>
-                  </Grid2>
+                  </Grid>
 
                   {/* Debt Range Dropdown */}
-                  <Grid2 item xs={6}>
+                  <Grid item xs={6}>
                     <FormControl fullWidth>
                       <InputLabel>Debt Range</InputLabel>
                       <Select
@@ -284,9 +284,9 @@ const ApplyModal = ({ open, onClose }) => {
                         </MenuItem>
                       </Select>
                     </FormControl>
-                  </Grid2>
+                  </Grid>
 
-                  <Grid2 item xs={12}>
+                  <Grid item xs={12}>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -302,9 +302,9 @@ const ApplyModal = ({ open, onClose }) => {
                       }
                       label="I agree to the Terms and Conditions"
                     />
-                  </Grid2>
+                  </Grid>
 
-                  <Grid2
+                  <Grid
                     item
                     xs={12}
                     sx={{ display: "flex", justifyContent: "center" }}
@@ -320,8 +320,8 @@ const ApplyModal = ({ open, onClose }) => {
                     >
                       {isSubmitting ? "Submitting..." : "Submit"}
                     </Button>
-                  </Grid2>
-                </Grid2>
+                  </Grid>
+                </Grid>
               </Form>
             )}
           </Formik>

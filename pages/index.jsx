@@ -47,12 +47,12 @@ export default function Home() {
           <Button
             variant="contained"
             sx={{
-              backgroundColor: "var(--color-text)",
+              backgroundColor: "var(--color-primary)",
               color: "white",
               fontWeight: 600,
               px: 4,
               py: 1.5,
-              "&:hover": { backgroundColor: "var(--color-secondary)" },
+              "&:hover": { backgroundColor: "var(--color-primary)" },
             }}
             onClick={handleOpenModal}
           >
@@ -61,10 +61,7 @@ export default function Home() {
         </Container>
       </Box>
 
-      {/* Key Features Section */}
       <KeyFeatures />
-
-      {/* Why Choose Us Section */}
 
       <WhyChooseUs />
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,55 +13,27 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link"; // For Next.js routing
 import RequestModal from "./RequestModal";
-import {
-  useIsLoggedIn,
-  useDynamicContext,
-  DynamicWidget,
-} from "@dynamic-labs/sdk-react-core";
-import { useRouter } from "next/router"; // Next.js router for manipulating URLs
+import { useRouter } from "next/router"; // Next.js router
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [openDynamicWidget, setOpenDynamicWidget] = useState(false);
-  const [isClient, setIsClient] = useState(false); // To check if we are on the client side
 
-  const isLoggedIn = useIsLoggedIn(); // Check if the user is logged in
-  const { handleLogOut, user, sdkHasLoaded, setShowAuthFlow, refreshUser } =
-    useDynamicContext(); // Use DynamicContext
-  const router = useRouter(); // Next.js router
+  const router = useRouter();
 
-  // Ensure the component is rendered on the client side
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);
 
-  const handleLoginClick = () => {
-    setOpenDynamicWidget(true); // Open the DynamicWidget for login
-    setShowAuthFlow(true); // Trigger Dynamic OAuth flow
-  };
-
   const handleLogoutClick = () => {
-    handleLogOut(); // Log out using DynamicContext's handleLogOut
-    setOpenDynamicWidget(false); // Optionally close the DynamicWidget
-    localStorage.clear(); // Clear localStorage if any session data is stored
-    router.push("/"); // Optionally redirect to the home page or login page after logout
+    // handleLogOut(); // Ensure handleLogOut is defined
+    localStorage.clear();
+    router.push("/");
   };
 
   const handleFormSubmit = (values) => {
     console.log("Form submitted:", values);
     handleCloseModal();
   };
-
-  // Only render if the component is on the client side
-  if (!isClient) {
-    return null;
-  }
 
   return (
     <>
@@ -77,8 +49,8 @@ export default function Header() {
           }}
         >
           {/* Logo */}
-          <IconButton edge="start" color="var(--color-text)" aria-label="logo">
-            <Link href="/" passHref>
+          <Link href="/" passHref>
+            <IconButton edge="start" color="inherit" aria-label="logo">
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <img
                   src="/empower-horizontal-logo.svg"
@@ -86,8 +58,8 @@ export default function Header() {
                   style={{ width: "160px", height: "auto" }}
                 />
               </Box>
-            </Link>
-          </IconButton>
+            </IconButton>
+          </Link>
 
           {/* Links for larger screens */}
           <Box
@@ -118,70 +90,16 @@ export default function Header() {
                 Contact Us
               </Typography>
             </Link>
-
-            {user ? (
-              <>
-                <Typography
-                  sx={{
-                    color: "var(--color-secondary)",
-                    textDecoration: "none",
-                    cursor: "pointer",
-                    marginRight: 2,
-                  }}
-                  onClick={handleOpenModal}
-                >
-                  Request
-                </Typography>
-                <Link href="/account" passHref>
-                  <Typography
-                    sx={{
-                      color: "var(--color-primary)",
-                      textDecoration: "none",
-                      cursor: "pointer",
-                      marginRight: 2,
-                    }}
-                  >
-                    {user.email || "Account"}
-                  </Typography>
-                </Link>
-                <Typography
-                  sx={{
-                    color: "var(--color-primary)",
-                    textDecoration: "none",
-                    cursor: "pointer",
-                    marginRight: 2,
-                  }}
-                  onClick={handleLogoutClick}
-                >
-                  Logout
-                </Typography>
-              </>
-            ) : (
-              <Typography
-                sx={{
-                  color: "var(--color-secondary)",
-                  textDecoration: "none",
-                  cursor: "pointer",
-                  marginRight: 2,
-                }}
-                onClick={handleLoginClick}
-              >
-                Login
-              </Typography>
-            )}
           </Box>
 
           {/* Hamburger menu for mobile */}
           <IconButton
-            edge="start"
+            edge="end"
             aria-label="menu"
             onClick={handleDrawerOpen}
             sx={{
-              display: {
-                xs: "flex",
-                md: "none",
-                color: "var(--color-secondary)",
-              },
+              display: { xs: "flex", md: "none" },
+              color: "var(--color-secondary)",
             }}
           >
             <MenuIcon />
@@ -197,57 +115,55 @@ export default function Header() {
           onClick={handleDrawerClose}
         >
           <List>
-            <ListItem button component={Link} href="/verification" passHref>
-              <ListItemText
-                primary="Verify"
-                sx={{ color: "var(--color-secondary)" }}
-              />
-            </ListItem>
-            <ListItem button component={Link} href="/contact-us" passHref>
-              <ListItemText
-                primary="Contact Us"
-                sx={{ color: "var(--color-primary)" }}
-              />
-            </ListItem>
-            {user ? (
-              <>
-                <ListItem button onClick={handleOpenModal}>
-                  <ListItemText
-                    primary="Request"
-                    sx={{ color: "var(--color-primary)" }}
-                  />
-                </ListItem>
-                <ListItem button component={Link} href="/account" passHref>
-                  <ListItemText
-                    primary={user.email || "Account"}
-                    sx={{ color: "var(--color-primary)" }}
-                  />
-                </ListItem>
-                <ListItem button onClick={handleLogoutClick}>
-                  <ListItemText
-                    primary="Logout"
-                    sx={{ color: "var(--color-primary)" }}
-                  />
-                </ListItem>
-              </>
-            ) : (
-              <ListItem button onClick={handleLoginClick}>
+            <Link href="/verification" passHref>
+              <ListItem button>
                 <ListItemText
-                  primary="Login"
+                  primary="Verify"
+                  sx={{ color: "var(--color-secondary)" }}
+                />
+              </ListItem>
+            </Link>
+            <Link href="/contact-us" passHref>
+              <ListItem button>
+                <ListItemText
+                  primary="Contact Us"
                   sx={{ color: "var(--color-primary)" }}
                 />
               </ListItem>
-            )}
+            </Link>
+            <ListItem>
+              <ListItemText
+                primary="Request"
+                sx={{ color: "var(--color-primary)" }}
+              />
+            </ListItem>
+            {/* If user is logged in */}
+            <>
+              <Link href="/account" passHref>
+                <ListItem button>
+                  <ListItemText
+                    primary="Account"
+                    sx={{ color: "var(--color-primary)" }}
+                  />
+                </ListItem>
+              </Link>
+
+              <ListItem button onClick={handleLogoutClick}>
+                <ListItemText
+                  primary="Logout"
+                  sx={{ color: "var(--color-primary)" }}
+                />
+              </ListItem>
+            </>
+            {/* <ListItem button onClick={handleLoginClick}>
+              <ListItemText
+                primary="Login"
+                sx={{ color: "var(--color-primary)" }}
+              />
+            </ListItem> */}
           </List>
         </Box>
       </Drawer>
-
-      {/* Dynamic Widget for login */}
-      {openDynamicWidget && sdkHasLoaded && (
-        <DynamicWidget
-          onClose={() => setOpenDynamicWidget(false)} // Close DynamicWidget when login finishes
-        />
-      )}
 
       {/* Request Modal */}
       {openModal && (
