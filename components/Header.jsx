@@ -11,9 +11,9 @@ import {
   Box,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Link from "next/link"; // For Next.js routing
+import Link from "next/link";
 import RequestModal from "./RequestModal";
-import { useRouter } from "next/router"; // Next.js router
+import { useRouter } from "next/router";
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -25,7 +25,6 @@ export default function Header() {
   const handleDrawerClose = () => setDrawerOpen(false);
 
   const handleLogoutClick = () => {
-    // handleLogOut(); // Ensure handleLogOut is defined
     localStorage.clear();
     router.push("/");
   };

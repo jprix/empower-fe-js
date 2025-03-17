@@ -8,9 +8,9 @@ import V2Landing from "/components/V2Landing";
 import { useLDClient } from "launchdarkly-react-client-sdk";
 export default function Home() {
   const flags = useFlags();
-  const ldClient = useLDClient(); // Get the LaunchDarkly client
+  const ldClient = useLDClient();
 
-  const speakWithSpecialist = flags["speak-with-specialist"] ?? false; // ✅ Use bracket notation correctly
+  const speakWithSpecialist = flags["speak-with-specialist"] ?? false;
   const isV2Landing = flags["v2Landing"] ?? false;
 
   useEffect(() => {
@@ -35,8 +35,6 @@ export default function Home() {
       ) : (
         <V1Landing flags={flags} />
       )}
-
-      {/* <ApplyModal open={openModal} onClose={handleCloseModal} /> */}
     </>
   );
 }

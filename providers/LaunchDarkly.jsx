@@ -25,7 +25,7 @@ export default function LaunchDarklyProvider({ children }) {
 
   if (!context) {
     console.log("Waiting for LaunchDarkly context...");
-    return null; // Prevent rendering before context is ready
+    return null;
   }
 
   return (
