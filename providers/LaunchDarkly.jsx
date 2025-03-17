@@ -8,15 +8,19 @@ export default function LaunchDarklyProvider({ children }) {
 
   useEffect(() => {
     console.log("Initializing LaunchDarkly...");
-    setContext({
-      kind: "user", // Required for LaunchDarkly
-      key: "user-1234", // Unique user key
-      email: "admin@example.com", // Example email
-      role: "admin", // ✅ Hardcoded admin role for testing
+
+    const userContext = {
+      kind: "user",
+      key: "user-1234", //change to any other value for v1Landing
+      email: "admin@example.com",
+      role: "admin",
+      country: "US", // change to UK for v1Landing
       custom: {
-        featureAccess: "admin", // ✅ Custom attribute used for targeting rules
+        featureAccess: "admin",
       },
-    });
+    };
+
+    setContext(userContext);
   }, []);
 
   if (!context) {
