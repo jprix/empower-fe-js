@@ -1,34 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
+- git clone https://github.com/jprix/empower-fe-js.git
+
+- in root project directory, run `npm install`
+- create a `.env` file in root directory of project
+- paste in the below (values submitted separately)
+
+```bash
+NEXT_PUBLIC_LD_CLIENT_ID={{launchDarlkly client iID}}
+LD_CLIENT_ID={{launchDarlkly client iID}}
+LD_API_KEY={{launchDarlkly API KEY}}
+LD_PROJECT_KEY=default
+NEXT_PUBLIC_LD_PROJECT_KEY=default
+NEXT_PUBLIC_LD_API_KEY={{launchDarlkly client iID}}
+```
+
+#### Run the App:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+#### Part 1 Release and Remediate:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Created a speak-with-specialist flag to show a new way of enrollment.
+- Instant releases/rollbacks: This is solved via useFlags() context. The speak-with-specialist flag is shown based on a ternary expression- if turned on, we will hide ‘Check my Rate’ static form and show an option to speak with a live specialist.
+- Remediate: Built admin page with REST Patch API call to allow for custom control on a 3rd party app (page requires admin role in user context).
 
-## Learn More
+#### Part 2 Target:
 
-To learn more about Next.js, take a look at the following resources:
+- Created a new flag called “v2Landing”
+- Context Attributes: Requires user context to be in US country and user value of: “user-1234”. To edit, modify key or country
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```javascript
+const userContext = {
+  kind: "user",
+  key: "user-1234", //change to any other value for v1Landing
+  email: "admin@example.com",
+  role: "admin",
+  country: "US", // change to UK for v1Landing
+  custom: {
+    featureAccess: "admin", // with this role you can see /LaunchDarklyAdmin page.
+  },
+};
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### Part 3: Experimentation
 
-## Deploy on Vercel
+- reused 'v2landing' flag
+- Created a metric call 'contact arrival'
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![public/experimentation.png](public/experimentation.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### Part 4: Integrations
+
+- connected vercel plugin

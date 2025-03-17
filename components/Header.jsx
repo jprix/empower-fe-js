@@ -78,7 +78,7 @@ export default function Header() {
               </Typography>
             </Link>
 
-            <Link href="/contact-us" passHref>
+            <Link href="/contact" passHref>
               <Typography
                 sx={{
                   color: "var(--color-secondary)",
@@ -123,7 +123,7 @@ export default function Header() {
                 />
               </ListItem>
             </Link>
-            <Link href="/contact-us" passHref>
+            <Link href="/contact" passHref>
               <ListItem button>
                 <ListItemText
                   primary="Contact Us"
