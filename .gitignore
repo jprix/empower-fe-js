@@ -33,3 +33,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ignore system directories
+~/.Trash/
+~/.Trash/**
+~/.Trash/assets/
+~/.Trash/assets/**
+

@@ -1,15 +1,11 @@
-import "../styles/globals.css";
-import React, { useState } from "react";
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import theme from "../theme"; // ✅ Ensure this path matches your project structure
+import LaunchDarklyProvider from "../providers/LaunchDarkly";
 import Head from "next/head";
-import { ConnectedAccountsProvider } from "../context/ConnectedAccounts";
-import { UserProvider } from "../context/UserContext";
-import { Snackbar, Alert } from "@mui/material";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 function MyApp({ Component, pageProps }) {
-  const [logoutSuccess, setLogoutSuccess] = useState(false);
-
   return (
     <>
       <Head>
@@ -21,21 +17,14 @@ function MyApp({ Component, pageProps }) {
           href="/empower-horizontal-logo.svg"
         />
       </Head>
-      <ConnectedAccountsProvider>
-        <UserProvider>
+      <LaunchDarklyProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline /> {/* Ensures consistent styling */}
           <Header />
           <Component {...pageProps} />
-          <Snackbar
-            open={logoutSuccess}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          >
-            <Alert severity="success" sx={{ width: "100%" }}>
-              You have been logged out successfully!
-            </Alert>
-          </Snackbar>
-        </UserProvider>
-      </ConnectedAccountsProvider>
-      <Footer />
+          <Footer />
+        </ThemeProvider>
+      </LaunchDarklyProvider>
     </>
   );
 }
