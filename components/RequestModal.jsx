@@ -71,7 +71,7 @@ export default function RequestModal({ open, handleClose, onSubmit }) {
             position: "absolute",
             top: 8,
             right: 8,
-            color: "var(--color-primary)", // Use the primary color for the close icon
+            color: "var(--color-primary)",
           }}
         >
           <CloseIcon />
@@ -82,7 +82,6 @@ export default function RequestModal({ open, handleClose, onSubmit }) {
         </Typography>
 
         {loading ? (
-          // Show the spinner with the logo during loading
           <>
             <Box
               display="flex"
