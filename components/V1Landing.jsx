@@ -1,16 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import KeyFeatures from "./KeyFeatures";
 import WhyChooseUs from "./WhyChooseUs";
 import { useRouter } from "next/router";
 import ApplyModal from "./ApplyModal";
+import LoanDisplay from "./LoanDisplay";
+import { useFlags, useLDClient } from "launchdarkly-react-client-sdk";
 
-const V1Landing = ({ flags }) => {
-  const speakWithSpecialist = flags["speak-with-specialist"] ?? false;
+const V1Landing = () => {
   const [openModal, setOpenModal] = useState(false);
-
+  const flags = useFlags();
+  const ldClient = useLDClient();
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
+  const userCreditScore = 720; // Example: Assume this comes from user profile data
+  console.log("Flags!", flags);
+  const [updatedFlags, setUpdatedFlags] = useState({});
+
+  useEffect(() => {
+    if (ldClient) {
+      console.log("Refreshing LaunchDarkly flags...");
+      const getFlags = ldClient.allFlags();
+      setUpdatedFlags(getFlags);
+      console.log("user plans", flags.userBasedLoanFilter);
+    }
+  }, [ldClient]);
+
+  // Use another useEffect to log the updated flags after they have been set
+  useEffect(() => {
+    console.log("Updated Flags:", updatedFlags);
+  }, [updatedFlags]);
 
   const router = useRouter();
   return (
@@ -79,7 +98,9 @@ const V1Landing = ({ flags }) => {
           )}
         </Container>
       </Box>
-
+      {flags.userBasedLoanFilter && (
+        <LoanDisplay userCreditScore={userCreditScore} />
+      )}
       <KeyFeatures />
       <WhyChooseUs />
       <ApplyModal open={openModal} onClose={handleCloseModal} />
