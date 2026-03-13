@@ -31,6 +31,53 @@ const reassuranceItems = [
   "Confidential consultation",
 ];
 
+const benefits = [
+  {
+    number: "01",
+    icon: "📉",
+    title: "Reduce Monthly Payments",
+    description:
+      "Explore options that may combine multiple balances into one more manageable monthly payment, often with less strain on your budget.",
+  },
+  {
+    number: "02",
+    icon: "🧭",
+    title: "Get a Clearer Plan",
+    description:
+      "Instead of guessing your way through creditor calls and due dates, speak with a specialist who can help map out realistic next steps.",
+  },
+  {
+    number: "03",
+    icon: "🌅",
+    title: "Build Toward Relief",
+    description:
+      "The goal is not just short-term breathing room. It is creating a path that helps you regain momentum and move toward long-term stability.",
+  },
+];
+
+const faqs = [
+  {
+    question: "What happens after I submit the contact form?",
+    answer:
+      "A debt specialist reviews the information you shared and follows up to discuss your situation, goals, and which options may be available. There is no obligation to move forward.",
+  },
+  {
+    question: "Will reaching out affect my credit score?",
+    answer:
+      "No. Contacting Empower Financial Network and discussing your options does not by itself affect your credit score.",
+  },
+  {
+    question: "Do I need a certain amount of debt to ask for help?",
+    answer:
+      "Not necessarily. People reach out at different stages, whether they are managing growing balances, missed payments, or simply trying to find a more sustainable path forward.",
+  },
+  {
+    question: "How quickly will someone get back to me?",
+    answer:
+      "Most inquiries receive a response within one business day, and many are handled sooner during business hours.",
+  },
+];
+
 const debtAmountOptions = [
   { value: "", label: "Select range" },
   { value: "under-10k", label: "Under $10,000" },
@@ -42,6 +89,7 @@ const debtAmountOptions = [
 ];
 
 export default function ContactPage() {
+  const [openFaq, setOpenFaq] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -281,6 +329,162 @@ export default function ContactPage() {
             )}
           </section>
         </div>
+
+        <section className="o3-benefits" id="benefits">
+          <div className="o3-benefits-header">
+            <div>
+              <div className="o3-section-label">Benefits</div>
+              <h2 className="o3-section-title">
+                What Real Relief Can
+                <br />
+                <em>Look Like</em>
+              </h2>
+            </div>
+            <p className="o3-benefits-intro">
+              The right conversation can turn financial stress into a practical
+              plan. These are the outcomes many people are hoping to create when
+              they first reach out.
+            </p>
+          </div>
+
+          <div className="o3-benefits-grid">
+            {benefits.map((benefit) => (
+              <div key={benefit.number} className="o3-benefit-card">
+                <div className="o3-benefit-num">{benefit.number}</div>
+                <div className="o3-benefit-icon">{benefit.icon}</div>
+                <h3 className="o3-benefit-title">{benefit.title}</h3>
+                <p className="o3-benefit-desc">{benefit.description}</p>
+                <a href="/contact" className="o3-benefit-link">
+                  Start the conversation →
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="o3-mission" id="mission">
+          <div className="o3-mission-visual">
+            <div className="o3-mission-img-frame">
+              <div className="o3-mission-graphic">
+                <svg viewBox="0 0 500 620" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="500" height="620" fill="#142850" />
+                  <line x1="0" y1="620" x2="500" y2="0" stroke="rgba(232,193,74,0.05)" strokeWidth="1" />
+                  <line x1="0" y1="500" x2="500" y2="0" stroke="rgba(232,193,74,0.05)" strokeWidth="1" />
+                  <line x1="100" y1="620" x2="500" y2="100" stroke="rgba(232,193,74,0.05)" strokeWidth="1" />
+                  <rect x="60" y="380" width="50" height="160" rx="4" fill="rgba(232,193,74,0.15)" />
+                  <rect x="130" y="300" width="50" height="240" rx="4" fill="rgba(232,193,74,0.2)" />
+                  <rect x="200" y="240" width="50" height="300" rx="4" fill="rgba(232,193,74,0.25)" />
+                  <rect x="270" y="180" width="50" height="360" rx="4" fill="rgba(232,193,74,0.35)" />
+                  <rect x="340" y="120" width="50" height="420" rx="4" fill="rgba(232,193,74,0.5)" />
+                  <rect x="410" y="60" width="50" height="480" rx="4" fill="#e8c14a" />
+                  <polyline points="85,380 155,300 225,240 295,180 365,120 435,60" fill="none" stroke="rgba(232,193,74,0.6)" strokeWidth="2" strokeDasharray="8 4" />
+                  <circle cx="85" cy="380" r="5" fill="rgba(232,193,74,0.4)" />
+                  <circle cx="155" cy="300" r="5" fill="rgba(232,193,74,0.5)" />
+                  <circle cx="225" cy="240" r="5" fill="rgba(232,193,74,0.6)" />
+                  <circle cx="295" cy="180" r="5" fill="rgba(232,193,74,0.7)" />
+                  <circle cx="365" cy="120" r="5" fill="rgba(232,193,74,0.85)" />
+                  <circle cx="435" cy="60" r="7" fill="#e8c14a" />
+                  <text x="250" y="560" textAnchor="middle" fontFamily="Playfair Display, serif" fontSize="18" fill="rgba(232,193,74,0.6)">
+                    A steadier financial path starts here
+                  </text>
+                  <circle cx="435" cy="60" r="30" fill="none" stroke="rgba(232,193,74,0.2)" strokeWidth="1" />
+                  <circle cx="435" cy="60" r="50" fill="none" stroke="rgba(232,193,74,0.1)" strokeWidth="1" />
+                </svg>
+              </div>
+            </div>
+            <div className="o3-mission-badge">
+              <div className="badge-num">1:1</div>
+              <div className="badge-text">Guidance</div>
+            </div>
+          </div>
+
+          <div className="o3-mission-content">
+            <div className="o3-section-label">Our Mission</div>
+            <h2 className="o3-section-title">
+              Give Every Client a
+              <br />
+              <em>Clearer Way Forward</em>
+            </h2>
+            <p className="o3-mission-body">
+              Empower Financial Network exists to make debt relief feel more
+              human, more transparent, and far less overwhelming. We believe
+              people deserve <strong>clear information</strong>, respectful
+              support, and solutions that are grounded in their real financial
+              situation rather than pressure or guesswork.
+            </p>
+
+            <div className="o3-mission-features">
+              <div className="o3-mission-feature">
+                <div className="o3-feature-icon-box">🛡️</div>
+                <div className="o3-feature-text">
+                  <h4>Clarity First</h4>
+                  <p>
+                    We focus on helping you understand your options before you
+                    make any decisions.
+                  </p>
+                </div>
+              </div>
+              <div className="o3-mission-feature">
+                <div className="o3-feature-icon-box">🤝</div>
+                <div className="o3-feature-text">
+                  <h4>People Over Pressure</h4>
+                  <p>
+                    Our goal is to be useful, informative, and respectful at
+                    every step of the process.
+                  </p>
+                </div>
+              </div>
+              <div className="o3-mission-feature">
+                <div className="o3-feature-icon-box">📋</div>
+                <div className="o3-feature-text">
+                  <h4>Practical Next Steps</h4>
+                  <p>
+                    We help turn a stressful situation into a concrete path you
+                    can actually act on.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="o3-faq" id="faq">
+          <div className="o3-faq-layout">
+            <div className="o3-faq-sticky">
+              <div className="o3-section-label">FAQ</div>
+              <h2 className="o3-section-title">
+                Questions People Ask
+                <br />
+                <em>Before They Start</em>
+              </h2>
+              <p className="o3-faq-body">
+                A few quick answers to the most common questions we hear from
+                people exploring debt relief options.
+              </p>
+            </div>
+
+            <div className="o3-faq-items">
+              {faqs.map((item, index) => (
+                <div
+                  key={item.question}
+                  className={`o3-faq-item${openFaq === index ? " open" : ""}`}
+                >
+                  <button
+                    type="button"
+                    className="o3-faq-q"
+                    onClick={() =>
+                      setOpenFaq(openFaq === index ? -1 : index)
+                    }
+                  >
+                    {item.question}
+                    <div className="o3-faq-toggle">+</div>
+                  </button>
+                  <div className="o3-faq-a">{item.answer}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
     </>
   );

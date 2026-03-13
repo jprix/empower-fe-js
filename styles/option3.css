@@ -140,9 +140,19 @@
   min-height: 100vh;
   position: relative;
   display: flex; align-items: center;
-  gap: 60px;
   padding: 100px 60px 100px;
   overflow: hidden;
+}
+
+.o3-hero-main {
+  position: relative;
+  z-index: 1;
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+  gap: clamp(36px, 5vw, 72px);
+  align-items: center;
 }
 
 .o3-hero-bg {
@@ -188,16 +198,19 @@
 /* ─── HERO CARD (right column) ─── */
 .o3-hero-card {
   position: relative; z-index: 1;
-  flex-shrink: 0;
-  width: 360px;
-  margin-left: auto;
-  margin-right: 50px;
+  width: min(100%, 420px);
   background: rgba(20, 40, 80, 0.7);
   border: 1px solid rgba(232,193,74,0.18);
   border-radius: 8px;
   padding: 36px 32px;
   backdrop-filter: blur(12px);
   animation: fadeUp 0.8s 0.6s ease both;
+}
+
+.o3-hero-card-wrap {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 24px;
 }
 
 .o3-hero-card-title {
@@ -312,12 +325,16 @@
 }
 
 @media (max-width: 1100px) {
+  .o3-hero-main {
+    grid-template-columns: 1fr;
+  }
+
   .o3-hero-card { display: none; }
 }
 
 .o3-hero-content {
   position: relative; z-index: 1;
-  max-width: 680px;
+  max-width: 760px;
 }
 
 .o3-hero-badge {
@@ -1266,21 +1283,263 @@
 /* ─── CONTACT PAGE ─── */
 .o3-contact-page {
   min-height: 100vh;
-  background: var(--navy);
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 58% 70% at 85% 20%, rgba(232,193,74,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 10% 85%, rgba(26,52,100,0.45) 0%, transparent 70%),
+    linear-gradient(135deg, #081323 0%, #0d1f3c 48%, #142850 100%);
   padding: 120px 60px 80px;
 }
 
-.o3-contact-inner {
-  max-width: 800px;
+.o3-contact-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232,193,74,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,193,74,0.04) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 45%, black 28%, transparent 82%);
+  pointer-events: none;
+}
+
+.o3-contact-grid {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
+  gap: 42px;
+  align-items: start;
+}
+
+.o3-contact-story {
+  position: relative;
+  padding: 18px 0 0;
+}
+
+.o3-contact-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  margin-bottom: 22px;
+  border-radius: 999px;
+  background: rgba(34,197,94,0.12);
+  border: 1px solid rgba(34,197,94,0.28);
+  color: #88d8a2;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.o3-contact-badge::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #88d8a2;
+  animation: pulse 2s infinite;
+}
+
+.o3-contact-intro {
+  max-width: 620px;
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-family: 'Libre Baskerville', serif;
+  font-size: 17px;
+  line-height: 1.85;
+}
+
+.o3-contact-points {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 34px 0 26px;
+}
+
+.o3-contact-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 22px 22px 20px;
+  border: 1px solid rgba(232,193,74,0.12);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(10px);
+}
+
+.o3-contact-point-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(232,193,74,0.14);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.o3-contact-point h3 {
+  margin: 0 0 6px;
+  color: var(--cream);
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+}
+
+.o3-contact-point p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.75;
+  font-size: 14px;
+}
+
+.o3-contact-trust-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.o3-contact-trust-bar span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(232,193,74,0.12);
+  background: rgba(255,255,255,0.04);
+  color: var(--cream);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.o3-contact-trust-bar span::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.o3-contact-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.o3-contact-info-card {
+  padding: 24px 22px;
+  border: 1px solid rgba(232,193,74,0.14);
+  border-radius: 14px;
+  background: rgba(20,40,80,0.52);
+  backdrop-filter: blur(12px);
+}
+
+.o3-contact-card-eyebrow {
+  margin-bottom: 10px;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.o3-contact-card-title {
+  display: inline-block;
+  color: var(--cream);
+  text-decoration: none;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  line-height: 1.35;
+}
+
+.o3-contact-info-card p {
+  margin: 12px 0 18px;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.o3-contact-card-cta {
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.o3-contact-form-shell {
+  position: sticky;
+  top: 110px;
+}
+
+.o3-contact-form,
+.o3-contact-success {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(232,193,74,0.16);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(232,193,74,0.12), transparent 24%),
+    linear-gradient(180deg, rgba(20,40,80,0.82) 0%, rgba(10,24,40,0.88) 100%);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 24px 70px rgba(6,14,28,0.34);
+}
+
+.o3-contact-form::before,
+.o3-contact-success::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232,193,74,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,193,74,0.03) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 10%, transparent 70%);
+  pointer-events: none;
 }
 
 .o3-contact-form {
-  background: var(--navy-mid);
-  border: 1px solid rgba(232,193,74,0.12);
-  border-radius: 8px;
-  padding: 48px;
-  margin-top: 48px;
+  padding: 36px 34px;
+}
+
+.o3-contact-form-top {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 26px;
+}
+
+.o3-contact-form-step {
+  margin-bottom: 8px;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+.o3-contact-form-top h2 {
+  margin: 0 0 8px;
+  color: var(--cream);
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.o3-contact-form-top p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-size: 14px;
 }
 
 .o3-form-row {
@@ -1291,6 +1550,8 @@
 }
 
 .o3-form-group {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -1309,15 +1570,15 @@
 
 .o3-form-input,
 .o3-form-textarea {
-  background: rgba(13,31,60,0.6);
+  background: rgba(13,31,60,0.68);
   border: 1px solid rgba(232,193,74,0.2);
-  border-radius: 4px;
+  border-radius: 10px;
   padding: 14px 18px;
   color: var(--cream);
   font-family: 'DM Sans', sans-serif;
   font-size: 15px;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
   width: 100%;
   box-sizing: border-box;
 }
@@ -1325,6 +1586,8 @@
 .o3-form-input:focus,
 .o3-form-textarea:focus {
   border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(232,193,74,0.1);
+  transform: translateY(-1px);
 }
 
 .o3-form-input::placeholder,
@@ -1335,6 +1598,133 @@
 .o3-form-textarea {
   resize: vertical;
   min-height: 140px;
+}
+
+.o3-form-select {
+  appearance: none;
+  cursor: pointer;
+  background:
+    rgba(13,31,60,0.68)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a9bb5' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat right 16px center;
+  padding-right: 46px;
+}
+
+.o3-contact-form-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.o3-contact-form-footer p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.o3-form-submit {
+  border: 0;
+  border-radius: 8px;
+  padding: 16px 26px;
+  background: var(--gold);
+  color: var(--navy);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 12px 28px rgba(232,193,74,0.22);
+}
+
+.o3-form-submit:hover:not(:disabled) {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px rgba(232,193,74,0.3);
+}
+
+.o3-form-submit:disabled {
+  opacity: 0.72;
+  cursor: wait;
+}
+
+.o3-form-error {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255,104,104,0.24);
+  border-radius: 10px;
+  background: rgba(137,30,30,0.2);
+  color: #ffd8d8;
+  font-size: 14px;
+}
+
+.o3-contact-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 560px;
+  padding: 42px 30px;
+}
+
+.o3-contact-success-icon {
+  width: 82px;
+  height: 82px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(232,193,74,0.14);
+  color: var(--gold);
+  font-size: 44px;
+  line-height: 1;
+}
+
+.o3-contact-success h2 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 10px;
+  color: var(--cream);
+  font-family: 'Playfair Display', serif;
+  font-size: 34px;
+}
+
+.o3-contact-success p {
+  position: relative;
+  z-index: 1;
+  max-width: 360px;
+  margin: 0 0 20px;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.o3-contact-success a {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 22px;
+  border-radius: 8px;
+  background: var(--gold);
+  color: var(--navy);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.o3-contact-success span {
+  position: relative;
+  z-index: 1;
+  margin-top: 14px;
+  color: var(--text-muted);
+  font-size: 13px;
 }
 
 .o3-form-submit {
@@ -1427,6 +1817,9 @@
   .o3-cta-section { padding: 60px 32px; }
   .o3-mission { padding: 72px 32px; }
   .o3-contact-page { padding: 100px 32px 60px; }
+  .o3-contact-grid { grid-template-columns: 1fr; gap: 28px; }
+  .o3-contact-form-shell { position: static; }
+  .o3-contact-card-grid { grid-template-columns: 1fr; }
 
   .o3-benefits-header { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
   .o3-benefits-grid { grid-template-columns: 1fr; gap: 2px; }
@@ -1556,6 +1949,12 @@
 
   .o3-calc-result-num { font-size: 32px; }
 
+  .o3-contact-intro { font-size: 15px; }
+  .o3-contact-point { padding: 18px 16px; }
+  .o3-contact-point h3 { font-size: 19px; }
   .o3-contact-form { padding: 24px 20px; }
+  .o3-contact-form-top h2 { font-size: 26px; }
+  .o3-contact-form-footer { align-items: stretch; }
+  .o3-form-submit { width: 100%; justify-content: center; }
   .o3-form-row { grid-template-columns: 1fr; }
 }
