@@ -1,38 +1,66 @@
-import React from 'react';
-import { Box, Typography, Link, Grid2, Container } from '@mui/material';
+import React from "react";
+import Link from "next/link";
 
 const Footer = () => {
-    return (
-        <Box sx={{ backgroundColor: '#000000', color: '#e6d193', padding: '40px 0', borderTop: '1px solid #e6d193', minHeight: '100vh' }}> 
-            <Container maxWidth="lg">
-                <Grid2 container spacing={2}>  
-                    <Grid2 item xs={12} sm={4}>
-                        <Typography variant="h6" gutterBottom>Empower Financial Network</Typography>
-                        <Typography variant="body2">P.O. Box 24</Typography>
-                        <Typography variant="body2">Eastport, NY 11941</Typography>
-                    </Grid2>
-                    <Grid2 item xs={12} sm={2}>
-                        <Typography variant="h6" gutterBottom>Quick Links</Typography>
-                        <Link href="/home" color="inherit" underline="hover">Home</Link><br />
-                        <Link href="/about-us" color="inherit" underline="hover">About Us</Link>
-                    </Grid2>
-                    <Grid2 item xs={12} sm={2}>
-                        <Typography variant="h6" gutterBottom>Resources</Typography>
-                        <Link href="/terms" color="inherit" underline="hover">Terms</Link><br />
-                        <Link href="/privacy" color="inherit" underline="hover">Privacy</Link>
-                    </Grid2>
-                    <Grid2 item xs={12} sm={4}>
-                        <Typography variant="h6" gutterBottom>Contact Us</Typography>
-                        <Typography variant="body2">Email: Marketing@EmpowerFN.com</Typography>
-                        <Typography variant="body2">Phone: (866) 490-1617</Typography>
-                    </Grid2>
-                </Grid2>
-                <Typography variant="body2" sx={{ mt: 1, display: 'block', textAlign: 'center' }}>  
-                    © 2025 Empower Financial Network. All rights reserved.
-                </Typography>
-            </Container>
-        </Box>
-    );
+  return (
+    <footer className="o3-footer">
+      <div className="o3-footer-top">
+        <div className="o3-footer-brand">
+          <div className="brand-title">Empower</div>
+          <div className="brand-sub">Financial Network</div>
+          <p>
+            Helping individuals and families break free from debt and build a
+            stronger financial future — one step at a time.
+          </p>
+          <p style={{ marginTop: "16px", fontSize: "13px" }}>
+            P.O. Box 24 · Eastport, NY 11941
+          </p>
+        </div>
+
+        <div className="o3-footer-col">
+          <h4>Navigate</h4>
+          <Link href="/">Home</Link>
+          <a href="#benefits">Benefits</a>
+          <a href="#mission">About Us</a>
+          <a href="#faq">FAQ</a>
+        </div>
+
+        <div className="o3-footer-col">
+          <h4>Legal</h4>
+          <Link href="/terms">Terms &amp; Conditions</Link>
+          <Link href="/privacy">Privacy Policy</Link>
+        </div>
+
+        <div className="o3-footer-col">
+          <h4>Contact</h4>
+          <a href="tel:8664901617">(866) 490-1617</a>
+          <a href="mailto:Marketing@EmpowerFN.com">Marketing@EmpowerFN.com</a>
+          <Link
+            href="/contact"
+            style={{ marginTop: "20px" }}
+            className="o3-btn-primary"
+          >
+            Free Consultation →
+          </Link>
+        </div>
+      </div>
+
+      <div className="o3-footer-bottom">
+        <span className="copy">
+          © 2026 Empower Financial Network. All rights reserved.
+        </span>
+        <span style={{ fontSize: "12px", opacity: 0.4 }}>Eastport, NY</span>
+      </div>
+
+      <p className="o3-footer-disclaimer">
+        Empower Financial Network connects consumers with debt relief service
+        providers. We are not a lender or debt settlement company. Results may
+        vary. Completing an application does not guarantee approval or specific
+        outcomes. Debt relief programs may have tax implications and may affect
+        your credit score.
+      </p>
+    </footer>
+  );
 };
 
 export default Footer;
