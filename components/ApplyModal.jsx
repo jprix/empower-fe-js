@@ -1,331 +1,756 @@
-import React from "react";
-import {
-  Modal,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Grid,
-  Checkbox,
-  FormControlLabel,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  IconButton,
-} from "@mui/material";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Modal, Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Formik, Form } from "formik";
+import { Formik, Form, getIn } from "formik";
 import * as Yup from "yup";
 import { getStates } from "../helpers/getStates";
 
-const ApplyModal = ({ open, onClose }) => {
-  const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    aptSuite: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    debtRange: "",
-    agreeTerms: false,
-  };
+const debtAmountOptions = [
+  "Under $10,000",
+  "$10,000 - $20,000",
+  "$20,000 - $35,000",
+  "$35,000 - $50,000",
+  "Over $50,000",
+];
 
-  const validationSchema = Yup.object({
+const debtTypeOptions = [
+  { value: "credit-card", label: "Credit Card", icon: "CC" },
+  { value: "collections", label: "Collections", icon: "CL" },
+  { value: "medical", label: "Medical", icon: "MD" },
+  { value: "other", label: "Other", icon: "OT" },
+];
+
+const monthOptions = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const progressLabels = [
+  "Debt Amount",
+  "Debt Type",
+  "Contact Info",
+  "Your Address",
+];
+
+const stepFieldMap = {
+  1: ["debtAmount"],
+  2: ["debtTypes"],
+  3: [
+    "firstName",
+    "lastName",
+    "phone",
+    "email",
+    "birthMonth",
+    "birthDay",
+    "birthYear",
+  ],
+  4: ["address", "city", "zipCode", "state"],
+};
+
+const stepSchemas = {
+  1: Yup.object({
+    debtAmount: Yup.string().required("Please select your debt amount"),
+  }),
+  2: Yup.object({
+    debtTypes: Yup.array()
+      .of(Yup.string())
+      .min(1, "Please select at least one debt type"),
+  }),
+  3: Yup.object({
     firstName: Yup.string()
       .trim()
-      .min(2, "First Name must be at least 2 characters")
-      .max(50, "First Name must be less than 50 characters")
-      .required("First Name is required"),
+      .min(2, "First name must be at least 2 characters")
+      .max(50, "First name must be less than 50 characters")
+      .required("First name is required"),
     lastName: Yup.string()
       .trim()
-      .min(2, "Last Name must be at least 2 characters")
-      .max(50, "Last Name must be less than 50 characters")
-      .required("Last Name is required"),
-    email: Yup.string()
-      .trim()
-      .email("Invalid email address")
-      .required("Email is required"),
+      .min(2, "Last name must be at least 2 characters")
+      .max(50, "Last name must be less than 50 characters")
+      .required("Last name is required"),
     phone: Yup.string()
       .matches(
         /^(\+1\s?)?(\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}$/,
-        "Invalid phone number format (e.g., +1 (123) 456-7890)"
+        "Enter a valid phone number"
       )
       .required("Phone number is required"),
+    email: Yup.string()
+      .trim()
+      .email("Enter a valid email")
+      .required("Email is required"),
+    birthMonth: Yup.string().required("Month is required"),
+    birthDay: Yup.string()
+      .matches(/^(0?[1-9]|[12]\d|3[01])$/, "Enter a valid day")
+      .required("Day is required"),
+    birthYear: Yup.string()
+      .matches(/^(19|20)\d{2}$/, "Enter a valid year")
+      .required("Year is required"),
+  }),
+  4: Yup.object({
     address: Yup.string()
       .trim()
       .min(5, "Address must be at least 5 characters")
       .max(100, "Address must be less than 100 characters")
-      .required("Address is required"),
+      .required("Street address is required"),
     city: Yup.string()
       .trim()
       .min(2, "City must be at least 2 characters")
       .max(50, "City must be less than 50 characters")
       .required("City is required"),
-    state: Yup.string().required("State is required"),
     zipCode: Yup.string()
-      .matches(
-        /^\d{5}(-\d{4})?$/,
-        "Invalid ZIP code format (e.g., 12345 or 12345-6789)"
-      )
-      .required("ZIP Code is required"),
-    debtRange: Yup.string()
-      .oneOf(
-        ["<50000", "50000-75000", "75000-100000", ">100000"],
-        "Invalid debt range selection"
-      )
-      .required("Debt range is required"),
-    agreeTerms: Yup.boolean()
-      .oneOf([true], "You must agree to the terms and conditions")
-      .required("You must agree to the terms and conditions"),
-  });
+      .matches(/^\d{5}$/, "Enter a valid 5-digit ZIP code")
+      .required("ZIP code is required"),
+    state: Yup.string().required("State is required"),
+  }),
+};
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log("Form Submitted Successfully:", values);
-    alert("Form Submitted Successfully");
-    // Simulate API call delay
-    setTimeout(() => {
-      setSubmitting(false);
-      onClose(); // Assuming onClose is passed to close the modal
-    }, 500);
+const fullSchema = stepSchemas[1]
+  .concat(stepSchemas[2])
+  .concat(stepSchemas[3])
+  .concat(stepSchemas[4]);
+
+const initialValues = {
+  debtAmount: "",
+  debtTypes: [],
+  firstName: "",
+  lastName: "",
+  phone: "",
+  email: "",
+  birthMonth: "",
+  birthDay: "",
+  birthYear: "",
+  address: "",
+  city: "",
+  zipCode: "",
+  state: "",
+};
+
+const ApplyModal = ({ open, onClose }) => {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const formikRef = useRef(null);
+  const states = useMemo(() => getStates(), []);
+
+  useEffect(() => {
+    if (open) {
+      setCurrentStep(1);
+      setIsSubmitted(false);
+      formikRef.current?.resetForm();
+    }
+  }, [open]);
+
+  const markStepTouched = (setTouched, touched, step) => {
+    const nextTouched = { ...touched };
+    stepFieldMap[step].forEach((field) => {
+      nextTouched[field] = true;
+    });
+    setTouched(nextTouched, true);
   };
 
   return (
-    <Modal open={open} onClose={onClose} aria-labelledby="modal-title">
+    <Modal
+      open={open}
+      onClose={onClose}
+      aria-labelledby="apply-now-modal"
+      slotProps={{ backdrop: { className: "apply-modal-backdrop" } }}
+    >
       <Box
         onClick={(e) => e.stopPropagation()}
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          bgcolor: "white",
-          boxShadow: 24,
-          borderRadius: "12px",
-          width: "100%",
-          maxWidth: "600px",
-        }}
+        className="apply-modal-shell"
       >
-        {/* Modal Header with Close Button */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            bgcolor: "#000000",
-            color: "white",
-            p: 2,
-            borderTopLeftRadius: "12px",
-            borderTopRightRadius: "12px",
-          }}
+        <IconButton
+          aria-label="Close apply modal"
+          onClick={onClose}
+          className="apply-modal-close"
         >
-          <Typography variant="h6" sx={{ color: "var(--color-secondary)" }}>
-            Apply Now
-          </Typography>
-          <IconButton onClick={onClose} sx={{ color: "white" }}>
-            <CloseIcon />
-          </IconButton>
-        </Box>
-        {/* Modal Content */}
-        <Box sx={{ p: 3 }}>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            enableReinitialize={false}
-            validateOnChange={true}
-            validateOnMount={true}
-            validateOnBlur={true}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              isSubmitting,
-              isValid,
-              setSubmitting,
-              dirty,
-            }) => (
-              <Form
-                onSubmit={() =>
-                  handleSubmit(values, isSubmitting, setSubmitting)
+          <CloseIcon />
+        </IconButton>
+
+        <div className="apply-modal-layout">
+          <aside className="apply-modal-sidebar">
+            <div className="apply-modal-sidebar-arc" />
+            <div className="apply-modal-sidebar-content">
+              <div className="apply-modal-badge">
+                Free · No Obligations · Takes 2 Minutes
+              </div>
+              <h2 className="apply-modal-hero-title">
+                One Low Payment.
+                <br />
+                <em>Total Financial Relief.</em>
+              </h2>
+              <p className="apply-modal-hero-copy">
+                Stop juggling creditor calls and multiple high-interest bills.
+                Our experts connect you with a personalized debt solution at
+                zero cost to you.
+              </p>
+
+              <div className="apply-modal-benefits">
+                <div className="apply-modal-benefit">
+                  <span className="apply-modal-check">+</span>
+                  <p>
+                    <strong>No credit score impact</strong> applying will not
+                    affect your score
+                  </p>
+                </div>
+                <div className="apply-modal-benefit">
+                  <span className="apply-modal-check">+</span>
+                  <p>
+                    <strong>Lower monthly payments</strong> often dramatically
+                    reduced
+                  </p>
+                </div>
+                <div className="apply-modal-benefit">
+                  <span className="apply-modal-check">+</span>
+                  <p>
+                    <strong>Personalized plan</strong> tailored to your exact
+                    situation
+                  </p>
+                </div>
+                <div className="apply-modal-benefit">
+                  <span className="apply-modal-check">+</span>
+                  <p>
+                    <strong>No upfront fees</strong> free to apply and consult
+                  </p>
+                </div>
+              </div>
+
+              <div className="apply-modal-proof">
+                <div className="apply-modal-proof-card">
+                  <span className="apply-modal-proof-name apply-modal-proof-trust">
+                    Trustpilot
+                  </span>
+                  <div className="apply-modal-proof-stars">★★★★★</div>
+                  <div className="apply-modal-proof-score">4.8 / 5</div>
+                  <div className="apply-modal-proof-meta">
+                    500+ verified reviews
+                  </div>
+                </div>
+                <div className="apply-modal-proof-card">
+                  <span className="apply-modal-proof-name apply-modal-proof-bbb">
+                    BBB Accredited
+                  </span>
+                  <div className="apply-modal-proof-stars">★★★★★</div>
+                  <div className="apply-modal-proof-score apply-modal-proof-score-bbb">
+                    A+
+                  </div>
+                  <div className="apply-modal-proof-meta">
+                    Accredited business
+                  </div>
+                </div>
+              </div>
+
+              <div className="apply-modal-testimonials">
+                <div className="apply-modal-testimonial">
+                  <div className="apply-modal-testimonial-stars">★★★★★</div>
+                  <p>
+                    &quot;Empower made everything feel clear and manageable. My
+                    monthly payments dropped in a way I could actually breathe
+                    again.&quot;
+                  </p>
+                  <span>Verified customer review</span>
+                </div>
+                <div className="apply-modal-testimonial">
+                  <div className="apply-modal-testimonial-stars">★★★★★</div>
+                  <p>
+                    &quot;The application was quick, pressure-free, and I heard
+                    back fast. It felt like real help instead of another sales
+                    pitch.&quot;
+                  </p>
+                  <span>Verified customer review</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="apply-modal-security">
+              <span>SSL Secure</span>
+              <span>Info stays private</span>
+              <span>No obligations</span>
+            </div>
+          </aside>
+
+          <section className="apply-modal-form-panel">
+            <Formik
+              innerRef={formikRef}
+              initialValues={initialValues}
+              validationSchema={stepSchemas[currentStep]}
+              validateOnMount={false}
+              validateOnChange={false}
+              validateOnBlur={true}
+              onSubmit={async (values, { setSubmitting }) => {
+                try {
+                  await fullSchema.validate(values, { abortEarly: false });
+                  console.log("Form Submitted Successfully:", values);
+                  setIsSubmitted(true);
+                } catch (error) {
+                  console.error("Form validation failed:", error);
+                } finally {
+                  setSubmitting(false);
                 }
-              >
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      name="firstName"
-                      label="First Name"
-                      fullWidth
-                      value={values.firstName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.firstName && Boolean(errors.firstName)}
-                      helperText={touched.firstName && errors.firstName}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      name="lastName"
-                      label="Last Name"
-                      fullWidth
-                      value={values.lastName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.lastName && Boolean(errors.lastName)}
-                      helperText={touched.lastName && errors.lastName}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      name="phone"
-                      label="Phone"
-                      fullWidth
-                      value={values.phone}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.phone && Boolean(errors.phone)}
-                      helperText={touched.phone && errors.phone}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      name="email"
-                      label="Email"
-                      fullWidth
-                      value={values.email}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.email && Boolean(errors.email)}
-                      helperText={touched.email && errors.email}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      name="address"
-                      label="Address"
-                      fullWidth
-                      value={values.address}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.address && Boolean(errors.address)}
-                      helperText={touched.address && errors.address}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      name="city"
-                      label="City"
-                      fullWidth
-                      value={values.city}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.city && Boolean(errors.city)}
-                      helperText={touched.city && errors.city}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      name="zipCode"
-                      label="Zip Code"
-                      fullWidth
-                      value={values.zipCode}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.zipCode && Boolean(errors.zipCode)}
-                      helperText={touched.zipCode && errors.zipCode}
-                    />
-                  </Grid>
+              }}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                isSubmitting,
+                validateForm,
+                setTouched,
+                setFieldValue,
+                handleChange,
+                handleBlur,
+              }) => {
+                const goToNextStep = async () => {
+                  const stepErrors = await validateForm();
+                  const hasStepErrors = stepFieldMap[currentStep].some((field) =>
+                    Boolean(getIn(stepErrors, field))
+                  );
 
-                  {/* State Dropdown */}
-                  <Grid item xs={6}>
-                    <FormControl fullWidth>
-                      <InputLabel>State</InputLabel>
-                      <Select
-                        name="state"
-                        value={values.state}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.state && Boolean(errors.state)}
-                        helperText={touched.state && errors.state}
-                      >
-                        {getStates().map((state) => (
-                          <MenuItem key={state.value} value={state.value}>
-                            {state.label}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
+                  if (hasStepErrors) {
+                    markStepTouched(setTouched, touched, currentStep);
+                    return;
+                  }
 
-                  {/* Debt Range Dropdown */}
-                  <Grid item xs={6}>
-                    <FormControl fullWidth>
-                      <InputLabel>Debt Range</InputLabel>
-                      <Select
-                        name="debtRange"
-                        value={values.debtRange}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.debtRange && Boolean(errors.debtRange)}
-                        helperText={touched.debtRange && errors.debtRange}
-                      >
-                        <MenuItem value="<50000">Less than 50,000</MenuItem>
-                        <MenuItem value="50000-75000">50,000 - 75,000</MenuItem>
-                        <MenuItem value="75000-100000">
-                          75,000 - 100,000
-                        </MenuItem>
-                        <MenuItem value=">100000">
-                          Greater than 100,000
-                        </MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
+                  setCurrentStep((step) => Math.min(step + 1, 4));
+                };
 
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          name="agreeTerms"
-                          checked={values.agreeTerms}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={
-                            touched.agreeTerms && Boolean(errors.agreeTerms)
-                          }
-                          helperText={touched.agreeTerms && errors.agreeTerms}
-                        />
-                      }
-                      label="I agree to the Terms and Conditions"
-                    />
-                  </Grid>
+                const toggleDebtType = (type) => {
+                  const nextTypes = values.debtTypes.includes(type)
+                    ? values.debtTypes.filter((item) => item !== type)
+                    : [...values.debtTypes, type];
+                  setFieldValue("debtTypes", nextTypes);
+                };
 
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{ display: "flex", justifyContent: "center" }}
-                  >
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      sx={{
-                        bgcolor: "var(--color-secondary)",
-                        color: "white",
-                      }}
-                      disabled={!isValid || !dirty || isSubmitting}
-                    >
-                      {isSubmitting ? "Submitting..." : "Submit"}
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Form>
-            )}
-          </Formik>
-        </Box>
+                const renderError = (field) =>
+                  touched[field] && errors[field] ? (
+                    <span className="apply-modal-error">{errors[field]}</span>
+                  ) : null;
+
+                return (
+                  <Form className="apply-modal-form" noValidate>
+                    <div className="apply-modal-mobile-proof">
+                      <div className="apply-modal-mobile-pill">
+                        <strong>Trustpilot</strong>
+                        <span>4.8 / 5</span>
+                      </div>
+                      <div className="apply-modal-mobile-pill">
+                        <strong>BBB</strong>
+                        <span>A+</span>
+                      </div>
+                      <div className="apply-modal-mobile-pill">
+                        <strong>SSL</strong>
+                        <span>Secure</span>
+                      </div>
+                    </div>
+
+                    <div className={`apply-modal-progress${isSubmitted ? " apply-modal-progress-dim" : ""}`}>
+                      <div className="apply-modal-progress-steps">
+                        {progressLabels.map((label, index) => {
+                          const step = index + 1;
+                          const status =
+                            step < currentStep || isSubmitted
+                              ? "done"
+                              : step === currentStep
+                                ? "active"
+                                : "idle";
+
+                          return (
+                            <React.Fragment key={label}>
+                              <div
+                                className={`apply-modal-progress-dot apply-modal-progress-dot-${status}`}
+                              >
+                                {status === "done" ? "✓" : step}
+                              </div>
+                              {step < progressLabels.length ? (
+                                <div
+                                  className={`apply-modal-progress-line${step < currentStep || isSubmitted ? " is-done" : ""}`}
+                                />
+                              ) : null}
+                            </React.Fragment>
+                          );
+                        })}
+                      </div>
+                      <div className="apply-modal-progress-label">
+                        <strong>
+                          Step {Math.min(currentStep, 4)} of 4
+                        </strong>{" "}
+                        - {progressLabels[currentStep - 1]}
+                      </div>
+                    </div>
+
+                    {!isSubmitted ? (
+                      <>
+                        {currentStep === 1 ? (
+                          <div className="apply-modal-step">
+                            <div className="apply-modal-step-head">
+                              <div className="apply-modal-step-num">
+                                Step 1 of 4
+                              </div>
+                              <h3>How much debt do you need help with?</h3>
+                              <p>
+                                Select the range that best matches your total
+                                current debt.
+                              </p>
+                            </div>
+
+                            <div className="apply-modal-option-list">
+                              {debtAmountOptions.map((option) => (
+                                <button
+                                  key={option}
+                                  type="button"
+                                  className={`apply-modal-option${values.debtAmount === option ? " is-selected" : ""}`}
+                                  onClick={() =>
+                                    setFieldValue("debtAmount", option)
+                                  }
+                                >
+                                  <span>{option}</span>
+                                  <span className="apply-modal-option-check">
+                                    {values.debtAmount === option ? "✓" : ""}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
+                            {renderError("debtAmount")}
+
+                            <button
+                              type="button"
+                              className="apply-modal-btn apply-modal-btn-primary"
+                              onClick={goToNextStep}
+                            >
+                              Continue - Select Debt Type
+                            </button>
+                            <div className="apply-modal-note">
+                              Filling out this form will not affect your credit
+                              score
+                            </div>
+                          </div>
+                        ) : null}
+
+                        {currentStep === 2 ? (
+                          <div className="apply-modal-step">
+                            <div className="apply-modal-step-head">
+                              <div className="apply-modal-step-num">
+                                Step 2 of 4
+                              </div>
+                              <h3>What kind of debt do you have?</h3>
+                              <p>
+                                Select all that apply and we will tailor the
+                                conversation to your situation.
+                              </p>
+                            </div>
+
+                            <div className="apply-modal-type-grid">
+                              {debtTypeOptions.map((option) => (
+                                <button
+                                  key={option.value}
+                                  type="button"
+                                  className={`apply-modal-type${values.debtTypes.includes(option.value) ? " is-selected" : ""}`}
+                                  onClick={() => toggleDebtType(option.value)}
+                                >
+                                  <span className="apply-modal-type-icon">
+                                    {option.icon}
+                                  </span>
+                                  <span>{option.label}</span>
+                                </button>
+                              ))}
+                            </div>
+                            {renderError("debtTypes")}
+
+                            <button
+                              type="button"
+                              className="apply-modal-btn apply-modal-btn-primary"
+                              onClick={goToNextStep}
+                            >
+                              Continue - Enter Your Info
+                            </button>
+                            <button
+                              type="button"
+                              className="apply-modal-btn apply-modal-btn-secondary"
+                              onClick={() => setCurrentStep(1)}
+                            >
+                              Back
+                            </button>
+                            <div className="apply-modal-note">
+                              No credit check and no obligations
+                            </div>
+                          </div>
+                        ) : null}
+
+                        {currentStep === 3 ? (
+                          <div className="apply-modal-step">
+                            <div className="apply-modal-step-head">
+                              <div className="apply-modal-step-num">
+                                Step 3 of 4
+                              </div>
+                              <h3>Your contact information</h3>
+                              <p>
+                                Our debt specialists will use this to discuss
+                                your available options.
+                              </p>
+                            </div>
+
+                            <div className="apply-modal-fields-grid">
+                              <label className="apply-modal-field">
+                                <span>First Name</span>
+                                <input
+                                  name="firstName"
+                                  type="text"
+                                  placeholder="Jane"
+                                  value={values.firstName}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {renderError("firstName")}
+                              </label>
+
+                              <label className="apply-modal-field">
+                                <span>Last Name</span>
+                                <input
+                                  name="lastName"
+                                  type="text"
+                                  placeholder="Smith"
+                                  value={values.lastName}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {renderError("lastName")}
+                              </label>
+
+                              <label className="apply-modal-field apply-modal-field-full">
+                                <span>Phone Number</span>
+                                <div className="apply-modal-phone">
+                                  <div className="apply-modal-phone-prefix">
+                                    +1
+                                  </div>
+                                  <input
+                                    name="phone"
+                                    type="tel"
+                                    placeholder="(555) 000-0000"
+                                    value={values.phone}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                  />
+                                </div>
+                                {renderError("phone")}
+                              </label>
+
+                              <label className="apply-modal-field apply-modal-field-full">
+                                <span>Email Address</span>
+                                <input
+                                  name="email"
+                                  type="email"
+                                  placeholder="jane@example.com"
+                                  value={values.email}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {renderError("email")}
+                              </label>
+
+                              <div className="apply-modal-field apply-modal-field-full">
+                                <span>Date of Birth</span>
+                                <div className="apply-modal-birth-row">
+                                  <select
+                                    name="birthMonth"
+                                    value={values.birthMonth}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                  >
+                                    <option value="">Month</option>
+                                    {monthOptions.map((month) => (
+                                      <option key={month} value={month}>
+                                        {month}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <input
+                                    name="birthDay"
+                                    type="text"
+                                    inputMode="numeric"
+                                    maxLength="2"
+                                    placeholder="Day"
+                                    value={values.birthDay}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                  />
+                                  <input
+                                    name="birthYear"
+                                    type="text"
+                                    inputMode="numeric"
+                                    maxLength="4"
+                                    placeholder="Year"
+                                    value={values.birthYear}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                  />
+                                </div>
+                                {renderError("birthMonth")}
+                                {renderError("birthDay")}
+                                {renderError("birthYear")}
+                              </div>
+                            </div>
+
+                            <button
+                              type="button"
+                              className="apply-modal-btn apply-modal-btn-primary"
+                              onClick={goToNextStep}
+                            >
+                              Continue - Almost Done
+                            </button>
+                            <button
+                              type="button"
+                              className="apply-modal-btn apply-modal-btn-secondary"
+                              onClick={() => setCurrentStep(2)}
+                            >
+                              Back
+                            </button>
+                          </div>
+                        ) : null}
+
+                        {currentStep === 4 ? (
+                          <div className="apply-modal-step">
+                            <div className="apply-modal-step-head">
+                              <div className="apply-modal-step-num">
+                                Step 4 of 4
+                              </div>
+                              <h3>Confirm your address</h3>
+                              <p>
+                                One last step and your free consultation request
+                                is ready to submit.
+                              </p>
+                            </div>
+
+                            <div className="apply-modal-address-stack">
+                              <label className="apply-modal-field">
+                                <span>Street Address</span>
+                                <input
+                                  name="address"
+                                  type="text"
+                                  placeholder="123 Main Street"
+                                  value={values.address}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                />
+                                {renderError("address")}
+                              </label>
+
+                              <div className="apply-modal-two-col">
+                                <label className="apply-modal-field">
+                                  <span>City</span>
+                                  <input
+                                    name="city"
+                                    type="text"
+                                    placeholder="New York"
+                                    value={values.city}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                  />
+                                  {renderError("city")}
+                                </label>
+
+                                <label className="apply-modal-field">
+                                  <span>ZIP Code</span>
+                                  <input
+                                    name="zipCode"
+                                    type="text"
+                                    inputMode="numeric"
+                                    maxLength="5"
+                                    placeholder="10001"
+                                    value={values.zipCode}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                  />
+                                  {renderError("zipCode")}
+                                </label>
+                              </div>
+
+                              <label className="apply-modal-field">
+                                <span>State</span>
+                                <select
+                                  name="state"
+                                  value={values.state}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                >
+                                  <option value="">Select your state</option>
+                                  {states.map((state) => (
+                                    <option
+                                      key={state.value}
+                                      value={state.value}
+                                    >
+                                      {state.label}
+                                    </option>
+                                  ))}
+                                </select>
+                                {renderError("state")}
+                              </label>
+                            </div>
+
+                            <div className="apply-modal-consent">
+                              By clicking submit, you agree to our Terms and
+                              Privacy Policy and consent to be contacted by
+                              Empower Financial Network and its partners by
+                              phone or text. Consent is not required as a
+                              condition of service.
+                            </div>
+
+                            <button
+                              type="submit"
+                              className="apply-modal-btn apply-modal-btn-accent"
+                              disabled={isSubmitting}
+                            >
+                              {isSubmitting
+                                ? "Submitting..."
+                                : "Submit My Free Application"}
+                            </button>
+                            <button
+                              type="button"
+                              className="apply-modal-btn apply-modal-btn-secondary"
+                              onClick={() => setCurrentStep(3)}
+                            >
+                              Back
+                            </button>
+                            <div className="apply-modal-note">
+                              256-bit SSL encryption and zero credit impact
+                            </div>
+                          </div>
+                        ) : null}
+                      </>
+                    ) : (
+                      <div className="apply-modal-success">
+                        <div className="apply-modal-success-icon">+</div>
+                        <h3>Application Submitted!</h3>
+                        <p>
+                          Thank you. One of our debt specialists will reach out
+                          shortly to review your options with you.
+                        </p>
+                        <a href="tel:8664901617">Call Us: (866) 490-1617</a>
+                        <span>Available Mon-Fri, 8am-8pm ET</span>
+                      </div>
+                    )}
+
+                    {!isSubmitted ? (
+                      <div className="apply-modal-trust-strip">
+                        <span>SSL Secure</span>
+                        <span>4.8 Trustpilot</span>
+                        <span>BBB A+</span>
+                        <span>No Obligations</span>
+                      </div>
+                    ) : null}
+                  </Form>
+                );
+              }}
+            </Formik>
+          </section>
+        </div>
       </Box>
     </Modal>
   );
