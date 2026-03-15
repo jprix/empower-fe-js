@@ -307,21 +307,6 @@ const ApplyModal = () => {
 
                 return (
                   <Form className="apply-modal-form" noValidate>
-                    <div className="apply-modal-mobile-proof">
-                      <div className="apply-modal-mobile-pill">
-                        <strong>Trustpilot</strong>
-                        <span>4.8 / 5</span>
-                      </div>
-                      <div className="apply-modal-mobile-pill">
-                        <strong>BBB</strong>
-                        <span>A+</span>
-                      </div>
-                      <div className="apply-modal-mobile-pill">
-                        <strong>SSL</strong>
-                        <span>Secure</span>
-                      </div>
-                    </div>
-
                     <div className={`apply-modal-progress${isSubmitted ? " apply-modal-progress-dim" : ""}`}>
                       <div className="apply-modal-progress-steps">
                         {progressLabels.map((label, index) => {
@@ -338,7 +323,7 @@ const ApplyModal = () => {
                               <div
                                 className={`apply-modal-progress-dot apply-modal-progress-dot-${status}`}
                               >
-                                {status === "done" ? "✓" : step}
+                                {step}
                               </div>
                               {step < progressLabels.length ? (
                                 <div
@@ -707,6 +692,23 @@ const ApplyModal = () => {
                         <span>Available Mon-Fri, 8am-8pm ET</span>
                       </div>
                     )}
+
+                    {!isSubmitted ? (
+                      <div className="apply-modal-mobile-proof">
+                        <div className="apply-modal-mobile-pill">
+                          <strong>Trustpilot</strong>
+                          <span>4.8 / 5</span>
+                        </div>
+                        <div className="apply-modal-mobile-pill">
+                          <strong>BBB</strong>
+                          <span>A+</span>
+                        </div>
+                        <div className="apply-modal-mobile-pill">
+                          <strong>SSL</strong>
+                          <span>Secure</span>
+                        </div>
+                      </div>
+                    ) : null}
 
                     {!isSubmitted ? (
                       <div className="apply-modal-trust-strip">

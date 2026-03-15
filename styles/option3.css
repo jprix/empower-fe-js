@@ -1777,6 +1777,12 @@
 
 /* ─── RESPONSIVE: TABLET (601–900px) ─── */
 @media (max-width: 900px) {
+  .o3-nav {
+    background: rgba(13,31,60,0.98);
+    backdrop-filter: none;
+    border-bottom: 1px solid rgba(232,193,74,0.16);
+  }
+
   .o3-nav { padding: 16px 28px; }
   .o3-nav-links { display: none; }
   .o3-hamburger { display: flex; }
@@ -1859,6 +1865,11 @@
 
 /* ─── RESPONSIVE: MOBILE (≤600px) ─── */
 @media (max-width: 600px) {
+  .o3-nav {
+    background: rgba(13,31,60,0.98);
+    backdrop-filter: none;
+  }
+
   .o3-nav { padding: 14px 16px; }
   .o3-nav-logo-text .logo-sub { display: none; }
   .o3-mobile-menu { top: 58px; }

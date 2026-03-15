@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useFlags } from "launchdarkly-react-client-sdk";
 import { useRouter } from "next/router";
 
 // ─── Savings Calculator Logic ───────────────────────────────────────────────
@@ -82,7 +81,6 @@ const faqData = [
 
 // ─── Main Component ──────────────────────────────────────────────────────────
 const V1Landing = () => {
-  const flags = useFlags();
   const router = useRouter();
 
   // Calculator state
@@ -97,11 +95,7 @@ const V1Landing = () => {
   useScrollReveal();
 
   const handleCta = () => {
-    if (flags.speakWithSpecialist) {
-      router.push("/contact");
-    } else {
-      router.push("/apply-now");
-    }
+    router.push("/apply-now");
   };
 
   return (

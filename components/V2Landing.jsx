@@ -4,7 +4,7 @@ import KeyFeatures from "./KeyFeatures";
 import WhyChooseUs from "./WhyChooseUs";
 import { useRouter } from "next/router";
 
-const V2Landing = ({ flags }) => {
+const V2Landing = () => {
   const router = useRouter();
 
   return (
@@ -28,41 +28,21 @@ const V2Landing = ({ flags }) => {
                 you need it most.
               </Typography>
 
-              {/* ✅ Show only one button based on flag */}
-              {flags.speakWithSpecialist ? (
-                <Button
-                  variant="contained"
-                  sx={{
-                    display: "block",
-                    mt: 3,
-                    color: "var(--color-primary)",
-                    fontWeight: 600,
-                    px: 4,
-                    py: 1.5,
-                    borderColor: "var(--color-primary)",
-                    "&:hover": { borderColor: "var(--color-primary)" },
-                  }}
-                  onClick={() => router.push("/contact")}
-                >
-                  Speak with a Specialist
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "var(--color-primary)",
-                    color: "white",
-                    fontWeight: 600,
-                    px: 4,
-                    py: 1.5,
-                    "&:hover": { backgroundColor: "var(--color-primary)" },
-                  }}
-                  onClick={() => router.push("/apply-now")}
-                >
-                  {" "}
-                  Check My Rate
-                </Button>
-              )}
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "var(--color-primary)",
+                  color: "white",
+                  fontWeight: 600,
+                  px: 4,
+                  py: 1.5,
+                  "&:hover": { backgroundColor: "var(--color-primary)" },
+                }}
+                onClick={() => router.push("/apply-now")}
+              >
+                {" "}
+                Check My Rate
+              </Button>
             </Grid>
 
             <Grid item xs={12} md={6}>
