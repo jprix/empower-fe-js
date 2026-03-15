@@ -20,9 +20,9 @@ const Footer = () => {
         <div className="o3-footer-col">
           <h4>Navigate</h4>
           <Link href="/">Home</Link>
-          <a href="#benefits">Benefits</a>
-          <a href="#mission">About Us</a>
-          <a href="#faq">FAQ</a>
+          <Link href="/#benefits">Benefits</Link>
+          <Link href="/#mission">About Us</Link>
+          <Link href="/#faq">FAQ</Link>
         </div>
 
         <div className="o3-footer-col">
