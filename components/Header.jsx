@@ -19,9 +19,9 @@ export default function Header() {
         </Link>
 
         <ul className="o3-nav-links">
-          <li><a href="#benefits">Benefits</a></li>
-          <li><a href="#mission">Our Mission</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><Link href="/#benefits">Benefits</Link></li>
+          <li><Link href="/#mission">Our Mission</Link></li>
+          <li><Link href="/#faq">FAQ</Link></li>
           <li>
             <Link href="/contact" className="o3-nav-cta">
               Free Consultation
@@ -41,9 +41,9 @@ export default function Header() {
       </nav>
 
       <div className={`o3-mobile-menu${menuOpen ? " open" : ""}`}>
-        <a href="#benefits" onClick={closeMenu}>Benefits</a>
-        <a href="#mission" onClick={closeMenu}>Our Mission</a>
-        <a href="#faq" onClick={closeMenu}>FAQ</a>
+        <Link href="/#benefits" onClick={closeMenu}>Benefits</Link>
+        <Link href="/#mission" onClick={closeMenu}>Our Mission</Link>
+        <Link href="/#faq" onClick={closeMenu}>FAQ</Link>
         <a href="tel:8664901617" onClick={closeMenu}>📞 (866) 490-1617</a>
         <Link href="/contact" className="mob-cta" onClick={closeMenu}>
           Get Free Consultation →
