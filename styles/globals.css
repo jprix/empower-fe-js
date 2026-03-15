@@ -1127,6 +1127,14 @@ body {
   color: #123462;
 }
 
+.legal-pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #2f3d56;
+  font: 400 1rem/1.72 "DM Sans", sans-serif;
+}
+
 .legal-quick-links {
   display: grid;
   gap: 6px;
