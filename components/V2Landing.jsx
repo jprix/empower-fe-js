@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import KeyFeatures from "./KeyFeatures";
 import WhyChooseUs from "./WhyChooseUs";
 import { useRouter } from "next/router";
-import ApplyModal from "./ApplyModal";
 
 const V2Landing = ({ flags }) => {
   const router = useRouter();
-  const [openModal, setOpenModal] = useState(false);
-
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
 
   return (
     <>
@@ -62,7 +57,7 @@ const V2Landing = ({ flags }) => {
                     py: 1.5,
                     "&:hover": { backgroundColor: "var(--color-primary)" },
                   }}
-                  onClick={handleOpenModal}
+                  onClick={() => router.push("/apply-now")}
                 >
                   {" "}
                   Check My Rate
@@ -93,7 +88,6 @@ const V2Landing = ({ flags }) => {
 
       <KeyFeatures />
       <WhyChooseUs />
-      <ApplyModal open={openModal} onClose={handleCloseModal} />
     </>
   );
 };

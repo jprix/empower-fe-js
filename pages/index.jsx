@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import { useFlags, useLDClient } from "launchdarkly-react-client-sdk";
-import { useRouter } from "next/router";
-import ApplyModal from "/components/ApplyModal";
 import V1Landing from "/components/V1Landing";
 import V2Landing from "/components/V2Landing";
-import LoanDisplay from "/components/LoanDisplay";
 
 export default function Home() {
   const flags = useFlags();
   const ldClient = useLDClient();
 
-  const speakWithSpecialist = flags["speak-with-specialist"] ?? false;
   const isV2Landing = flags["v2Landing"] ?? false;
 
   useEffect(() => {

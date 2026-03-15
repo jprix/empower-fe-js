@@ -1,6 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Modal, Box, IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import React, { useMemo, useState } from "react";
 import { Formik, Form, getIn } from "formik";
 import * as Yup from "yup";
 import { getStates } from "../helpers/getStates";
@@ -134,19 +132,10 @@ const initialValues = {
   state: "",
 };
 
-const ApplyModal = ({ open, onClose }) => {
+const ApplyModal = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const formikRef = useRef(null);
   const states = useMemo(() => getStates(), []);
-
-  useEffect(() => {
-    if (open) {
-      setCurrentStep(1);
-      setIsSubmitted(false);
-      formikRef.current?.resetForm();
-    }
-  }, [open]);
 
   const markStepTouched = (setTouched, touched, step) => {
     const nextTouched = { ...touched };
@@ -157,25 +146,8 @@ const ApplyModal = ({ open, onClose }) => {
   };
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      aria-labelledby="apply-now-modal"
-      slotProps={{ backdrop: { className: "apply-modal-backdrop" } }}
-    >
-      <Box
-        onClick={(e) => e.stopPropagation()}
-        className="apply-modal-shell"
-      >
-        <IconButton
-          aria-label="Close apply modal"
-          onClick={onClose}
-          className="apply-modal-close"
-        >
-          <CloseIcon />
-        </IconButton>
-
-        <div className="apply-modal-layout">
+    <div className="apply-modal-shell">
+      <div className="apply-modal-layout">
           <aside className="apply-modal-sidebar">
             <div className="apply-modal-sidebar-arc" />
             <div className="apply-modal-sidebar-content">
@@ -279,7 +251,6 @@ const ApplyModal = ({ open, onClose }) => {
 
           <section className="apply-modal-form-panel">
             <Formik
-              innerRef={formikRef}
               initialValues={initialValues}
               validationSchema={stepSchemas[currentStep]}
               validateOnMount={false}
@@ -751,8 +722,7 @@ const ApplyModal = ({ open, onClose }) => {
             </Formik>
           </section>
         </div>
-      </Box>
-    </Modal>
+    </div>
   );
 };
 

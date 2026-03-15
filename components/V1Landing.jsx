@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useFlags } from "launchdarkly-react-client-sdk";
-import ApplyModal from "./ApplyModal";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 // ─── Savings Calculator Logic ───────────────────────────────────────────────
@@ -10,7 +8,17 @@ function formatCurrency(n) {
 }
 
 function calcResults(debt, payment, rate) {
-  const reductionRate = Math.min(0.45, 0.3 + rate / 100);
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+  const debtFactor = clamp((debt - 5000) / 95000, 0, 1);
+  const rateFactor = clamp((rate - 10) / 25, 0, 1);
+  const paymentFactor = clamp(payment / 3000, 0, 1);
+
+  // Higher debt and higher APR should increase the estimated monthly payment.
+  const reductionRate = clamp(
+    0.58 - debtFactor * 0.18 - rateFactor * 0.14 + paymentFactor * 0.06,
+    0.18,
+    0.64
+  );
   const newPmt = Math.round((payment * (1 - reductionRate)) / 10) * 10;
   const monthly = payment - newPmt;
   const annual = monthly * 12;
@@ -74,7 +82,6 @@ const faqData = [
 
 // ─── Main Component ──────────────────────────────────────────────────────────
 const V1Landing = () => {
-  const [openModal, setOpenModal] = useState(false);
   const flags = useFlags();
   const router = useRouter();
 
@@ -93,7 +100,7 @@ const V1Landing = () => {
     if (flags.speakWithSpecialist) {
       router.push("/contact");
     } else {
-      setOpenModal(true);
+      router.push("/apply-now");
     }
   };
 
@@ -654,8 +661,6 @@ const V1Landing = () => {
           </div>
         </div>
       </div>
-
-      <ApplyModal open={openModal} onClose={() => setOpenModal(false)} />
     </>
   );
 };

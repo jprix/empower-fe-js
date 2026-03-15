@@ -75,6 +75,23 @@ body {
   backdrop-filter: blur(14px);
 }
 
+.apply-page {
+  min-height: 100vh;
+  padding: 32px 16px;
+  background:
+    radial-gradient(circle at top, rgba(232, 193, 74, 0.08), transparent 34%),
+    linear-gradient(160deg, #081424 0%, #0b1f3f 55%, #102a52 100%);
+}
+
+.apply-page .apply-modal-shell {
+  position: relative;
+  inset: auto;
+  transform: none;
+  width: min(1120px, 100%);
+  max-height: none;
+  margin: 0 auto;
+}
+
 .apply-modal-shell {
   position: absolute;
   inset: 50% auto auto 50%;
@@ -791,7 +808,167 @@ body {
   flex-wrap: wrap;
 }
 
+/* Apply page: cream form panel treatment */
+.apply-page .apply-modal-form-panel {
+  background: var(--cream);
+  color: var(--navy);
+}
+
+.apply-page .apply-modal-mobile-pill {
+  background: #fff;
+  border-color: #e0d8c6;
+}
+
+.apply-page .apply-modal-mobile-pill strong {
+  color: #6a6050;
+}
+
+.apply-page .apply-modal-mobile-pill span {
+  color: var(--navy);
+}
+
+.apply-page .apply-modal-progress-dot {
+  border-color: #d0c9b4;
+  background: #fff;
+  color: #9a9080;
+}
+
+.apply-page .apply-modal-progress-dot-active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--gold);
+}
+
+.apply-page .apply-modal-progress-dot-done {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #fff;
+}
+
+.apply-page .apply-modal-progress-line {
+  background: #d0c9b4;
+}
+
+.apply-page .apply-modal-progress-line.is-done {
+  background: #22c55e;
+}
+
+.apply-page .apply-modal-progress-label {
+  color: #7a7060;
+}
+
+.apply-page .apply-modal-progress-label strong,
+.apply-page .apply-modal-step-head h3 {
+  color: var(--navy);
+}
+
+.apply-page .apply-modal-step-head p,
+.apply-page .apply-modal-field span {
+  color: #6a6050;
+}
+
+.apply-page .apply-modal-step-num {
+  color: var(--gold-dim);
+}
+
+.apply-page .apply-modal-option,
+.apply-page .apply-modal-type {
+  border-color: #e0d8c6;
+  background: #fff;
+  color: var(--navy);
+  backdrop-filter: none;
+}
+
+.apply-page .apply-modal-option:hover,
+.apply-page .apply-modal-type:hover {
+  border-color: var(--navy);
+  background: rgba(13, 31, 60, 0.03);
+}
+
+.apply-page .apply-modal-option.is-selected,
+.apply-page .apply-modal-type.is-selected {
+  border-color: var(--navy);
+  background: rgba(13, 31, 60, 0.05);
+}
+
+.apply-page .apply-modal-option-check {
+  border-color: #d0c9b4;
+}
+
+.apply-page .apply-modal-option.is-selected .apply-modal-option-check {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+.apply-page .apply-modal-type-icon {
+  background: rgba(13, 31, 60, 0.08);
+  color: var(--navy);
+}
+
+.apply-page .apply-modal-field input,
+.apply-page .apply-modal-field select,
+.apply-page .apply-modal-phone input {
+  border-color: #e0d8c6;
+  background: #fff;
+  color: var(--navy);
+}
+
+.apply-page .apply-modal-field input::placeholder,
+.apply-page .apply-modal-phone input::placeholder {
+  color: #b0a898;
+}
+
+.apply-page .apply-modal-field input:focus,
+.apply-page .apply-modal-field select:focus,
+.apply-page .apply-modal-phone input:focus {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(13, 31, 60, 0.12);
+}
+
+.apply-page .apply-modal-phone-prefix {
+  border-color: #e0d8c6;
+  background: #f0e8d4;
+  color: #6a6050;
+}
+
+.apply-page .apply-modal-consent {
+  border-color: #d0c9b4;
+  background: rgba(13, 31, 60, 0.04);
+  color: #7a7060;
+}
+
+.apply-page .apply-modal-btn-secondary {
+  color: #7a7060;
+}
+
+.apply-page .apply-modal-btn-secondary:hover:not(:disabled) {
+  color: var(--navy);
+}
+
+.apply-page .apply-modal-success h3 {
+  color: var(--navy);
+}
+
+.apply-page .apply-modal-success p,
+.apply-page .apply-modal-success span,
+.apply-page .apply-modal-trust-strip {
+  color: #9a9080;
+}
+
+.apply-page .apply-modal-trust-strip {
+  border-top-color: #e8e0d0;
+}
+
 @media (max-width: 980px) {
+  .apply-page {
+    padding: 24px 12px;
+  }
+
+  .apply-page .apply-modal-shell {
+    width: min(760px, 100%);
+  }
+
   .apply-modal-shell {
     width: min(760px, calc(100vw - 24px));
   }
@@ -818,6 +995,15 @@ body {
 }
 
 @media (max-width: 640px) {
+  .apply-page {
+    padding: 12px 8px;
+  }
+
+  .apply-page .apply-modal-shell {
+    width: 100%;
+    border-radius: 18px;
+  }
+
   .apply-modal-shell {
     width: calc(100vw - 16px);
     max-height: calc(100vh - 16px);
