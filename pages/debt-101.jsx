@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const faqItems = [
   {
@@ -68,6 +68,26 @@ export default function Debt101Page() {
   const [income, setIncome] = useState(3500);
   const [debt, setDebt] = useState(20000);
   const [openFaqIndex, setOpenFaqIndex] = useState(0);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+
+    const reveals = document.querySelectorAll(".debt101-page .reveal");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, index) => {
+          if (!entry.isIntersecting) return;
+          setTimeout(() => entry.target.classList.add("visible"), index * 70);
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    reveals.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
 
   const tool = useMemo(() => {
     const consolidationScore =
@@ -212,7 +232,7 @@ export default function Debt101Page() {
 
       <main className="debt101-page">
         <section className="hero">
-          <div className="heroInner">
+          <div className="heroInner reveal">
             <span className="heroTag">Updated March 2026</span>
             <h1>
               America is drowning
@@ -231,7 +251,7 @@ export default function Debt101Page() {
             </a>
           </div>
 
-          <div className="heroStats">
+          <div className="heroStats reveal">
             <div className="heroStat">
               <span className="heroStatNum danger">$1.14T</span>
               <span className="heroStatLabel">Total U.S. credit card debt</span>
@@ -261,7 +281,7 @@ export default function Debt101Page() {
               revolving balances for everyday expenses.
             </p>
 
-            <div className="statRow">
+            <div className="statRow reveal">
               <div className="statBox alert">
                 <span className="statNum">$38,000</span>
                 <div className="statLabel">
@@ -293,7 +313,7 @@ export default function Debt101Page() {
               </div>
             </div>
 
-            <div className="crisisGrid">
+            <div className="crisisGrid reveal">
               <div className="chartCard">
                 <p className="chartTitle">Average card balance by income bracket</p>
                 <div className="barChart">
@@ -382,7 +402,7 @@ export default function Debt101Page() {
         </section>
 
         <div className="factStrip">
-          <div className="container factGrid">
+          <div className="container factGrid reveal">
             <div className="factItem">
               <div className="factNum">1 in 5</div>
               <div className="factText">
@@ -417,7 +437,7 @@ export default function Debt101Page() {
               score, income, and total debt.
             </p>
 
-            <div className="toolWrap">
+            <div className="toolWrap reveal">
               <div className="toolHeader">
                 <h3>Your debt situation</h3>
                 <p>All estimates update live based on your inputs below.</p>
@@ -542,7 +562,7 @@ export default function Debt101Page() {
         <section id="consolidation" className="optionSection">
           <div className="container">
             <span className="sectionEyebrow">Option 1</span>
-            <div className="optionHeader">
+            <div className="optionHeader reveal">
               <div className="optionInfo">
                 <h3 className="sectionTitle">Debt Consolidation</h3>
                 <p>
@@ -575,7 +595,7 @@ export default function Debt101Page() {
               </div>
             </div>
 
-            <div className="whoQualifies">
+            <div className="whoQualifies reveal">
               <h4>Who typically qualifies for consolidation?</h4>
               <div className="criteriaGrid">
                 <div className="criteriaItem">
@@ -610,7 +630,7 @@ export default function Debt101Page() {
         <section id="relief" className="optionSection optionSectionAlt">
           <div className="container">
             <span className="sectionEyebrow">Option 2</span>
-            <div className="optionHeader">
+            <div className="optionHeader reveal">
               <div className="optionInfo">
                 <h3 className="sectionTitle">Debt Relief Programs</h3>
                 <p>
@@ -644,7 +664,7 @@ export default function Debt101Page() {
               </div>
             </div>
 
-            <div className="whoQualifies">
+            <div className="whoQualifies reveal">
               <h4>Who typically benefits most from debt relief?</h4>
               <div className="criteriaGrid">
                 <div className="criteriaItem">
@@ -679,7 +699,7 @@ export default function Debt101Page() {
         <section id="bankruptcy" className="optionSection">
           <div className="container">
             <span className="sectionEyebrow">Option 3</span>
-            <div className="optionHeader">
+            <div className="optionHeader reveal">
               <div className="optionInfo">
                 <h3 className="sectionTitle">Bankruptcy</h3>
                 <p>
@@ -714,7 +734,7 @@ export default function Debt101Page() {
               </div>
             </div>
 
-            <div className="whoQualifies">
+            <div className="whoQualifies reveal">
               <h4>Chapter 7 vs. Chapter 13</h4>
               <div className="criteriaGrid">
                 <div className="criteriaItem">
@@ -750,7 +770,7 @@ export default function Debt101Page() {
           <div className="container">
             <span className="sectionEyebrow">Common Questions</span>
             <h2 className="sectionTitle">What people ask most</h2>
-            <div className="faqList">
+            <div className="faqList reveal">
               {faqItems.map((item, index) => {
                 const isOpen = openFaqIndex === index;
 
@@ -812,9 +832,9 @@ export default function Debt101Page() {
           --ink: #f9f4e8;
           --paper: #0d1f3c;
           --cream: #f9f4e8;
-          --accent: #e8c14a;
-          --accent-light: #f0d070;
-          --accent-dark: #c9a83c;
+          --accent: var(--gold);
+          --accent-light: var(--gold-light);
+          --accent-dark: var(--gold-dim);
           --muted: #8a9bb5;
           --border: rgba(232, 193, 74, 0.14);
           --card: rgba(20, 40, 80, 0.82);
@@ -826,6 +846,17 @@ export default function Debt101Page() {
 
         .debt101-page :global(*) {
           box-sizing: border-box;
+        }
+
+        .debt101-page :global(.reveal) {
+          opacity: 0;
+          transform: translateY(40px);
+          transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .debt101-page :global(.reveal.visible) {
+          opacity: 1;
+          transform: translateY(0);
         }
 
         .container,
@@ -1601,6 +1632,12 @@ export default function Debt101Page() {
         }
 
         @media (max-width: 900px) {
+          .debt101-page :global(.reveal) {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
+
           .heroStats,
           .statRow,
           .crisisGrid,

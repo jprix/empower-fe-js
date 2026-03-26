@@ -22,6 +22,7 @@ export default function Header() {
           <li><Link href="/#benefits">Benefits</Link></li>
           <li><Link href="/#mission">Our Mission</Link></li>
           <li><Link href="/#faq">FAQ</Link></li>
+          <li><Link href="/debt-101">Debt 101</Link></li>
           <li>
             <Link href="/contact" className="o3-nav-cta">
               Free Consultation
@@ -44,6 +45,7 @@ export default function Header() {
         <Link href="/#benefits" onClick={closeMenu}>Benefits</Link>
         <Link href="/#mission" onClick={closeMenu}>Our Mission</Link>
         <Link href="/#faq" onClick={closeMenu}>FAQ</Link>
+        <Link href="/debt-101" onClick={closeMenu}>Debt 101</Link>
         <a href="tel:8664901617" onClick={closeMenu}>📞 (866) 490-1617</a>
         <Link href="/contact" className="mob-cta" onClick={closeMenu}>
           Get Free Consultation →
