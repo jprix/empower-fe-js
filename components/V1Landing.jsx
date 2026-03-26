@@ -225,7 +225,13 @@ const V1Landing = () => {
         <div className="o3-benefits-grid reveal">
           <div className="o3-benefit-card">
             <div className="o3-benefit-num">01</div>
-            <div className="o3-benefit-icon">📉</div>
+            <div className="o3-benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" className="o3-benefit-icon-svg">
+                <rect x="8" y="9" width="32" height="30" rx="8" />
+                <path d="M16 28.5 22 22.5 27 26.5 33 18.5" />
+                <path d="M28.5 18.5H33v4.5" />
+              </svg>
+            </div>
             <h3 className="o3-benefit-title">Reduce Monthly Payments</h3>
             <p className="o3-benefit-desc">
               Debt relief consolidates your payments into one manageable monthly
@@ -238,7 +244,14 @@ const V1Landing = () => {
           </div>
           <div className="o3-benefit-card">
             <div className="o3-benefit-num">02</div>
-            <div className="o3-benefit-icon">🎯</div>
+            <div className="o3-benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" className="o3-benefit-icon-svg">
+                <circle cx="24" cy="24" r="12" />
+                <circle cx="24" cy="24" r="7" />
+                <circle cx="24" cy="24" r="2.5" />
+                <path d="M31.5 16.5 38 10l-1.5 7 1.5 1.5-7 1.5Z" />
+              </svg>
+            </div>
             <h3 className="o3-benefit-title">Tailored Solutions</h3>
             <p className="o3-benefit-desc">
               No two financial situations are the same. Our debt relief programs
@@ -251,7 +264,15 @@ const V1Landing = () => {
           </div>
           <div className="o3-benefit-card">
             <div className="o3-benefit-num">03</div>
-            <div className="o3-benefit-icon">🌅</div>
+            <div className="o3-benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" className="o3-benefit-icon-svg">
+                <path d="M12 31c3.5-6.5 8-9.5 12-9.5S32.5 24.5 36 31" />
+                <path d="M10 33h28" />
+                <path d="M24 13v6" />
+                <path d="M16.5 16.5l3 3" />
+                <path d="M31.5 16.5l-3 3" />
+              </svg>
+            </div>
             <h3 className="o3-benefit-title">A Debt-Free Future</h3>
             <p className="o3-benefit-desc">
               Once the process is complete, you emerge with the opportunity to
