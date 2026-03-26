@@ -199,7 +199,7 @@ const ApplyModal = () => {
               <div className="apply-modal-proof">
                 <div className="apply-modal-proof-card">
                   <TrustpilotWidget
-                    templateId={process.env.NEXT_PUBLIC_TRUSTPILOT_MODAL_TEMPLATE_ID}
+                    templateId={process.env.NEXT_PUBLIC_TRUSTPILOT_TEMPLATE_ID}
                     height="132px"
                     theme="dark"
                     score="4.8"
@@ -699,7 +699,7 @@ const ApplyModal = () => {
                       <div className="apply-modal-mobile-proof">
                         <div className="apply-modal-mobile-pill">
                           <TrustpilotWidget
-                            templateId={process.env.NEXT_PUBLIC_TRUSTPILOT_MODAL_TEMPLATE_ID}
+                            templateId={process.env.NEXT_PUBLIC_TRUSTPILOT_TEMPLATE_ID}
                             height="88px"
                             theme="dark"
                             score="4.8"

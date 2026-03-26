@@ -14,9 +14,8 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" type="image/png" href="/favicon.png" />
-        <link rel="icon" type="image/svg+xml" href="/empower-horizontal-logo.svg" />
+        <link rel="icon" type="image/svg+xml" href="/favicon_E_empower.svg" />
+        <link rel="shortcut icon" href="/favicon_E_empower.svg" />
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />

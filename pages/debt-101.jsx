@@ -443,7 +443,7 @@ export default function Debt101Page() {
 
               <div className="trustPanelWidget">
                 <TrustpilotWidget
-                  templateId={process.env.NEXT_PUBLIC_TRUSTPILOT_DEBT_TEMPLATE_ID}
+                  templateId={process.env.NEXT_PUBLIC_TRUSTPILOT_TEMPLATE_ID}
                   height="220px"
                   theme="light"
                   score="4.8"

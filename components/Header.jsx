@@ -24,7 +24,7 @@ export default function Header() {
           <li><Link href="/#faq">FAQ</Link></li>
           <li><Link href="/debt-101">Debt 101</Link></li>
           <li>
-            <Link href="/contact" className="o3-nav-cta">
+            <Link href="/apply-now" className="o3-nav-cta">
               Free Consultation
             </Link>
           </li>
@@ -47,7 +47,7 @@ export default function Header() {
         <Link href="/#faq" onClick={closeMenu}>FAQ</Link>
         <Link href="/debt-101" onClick={closeMenu}>Debt 101</Link>
         <a href="tel:8664901617" onClick={closeMenu}>📞 (866) 490-1617</a>
-        <Link href="/contact" className="mob-cta" onClick={closeMenu}>
+        <Link href="/apply-now" className="mob-cta" onClick={closeMenu}>
           Get Free Consultation →
         </Link>
       </div>
