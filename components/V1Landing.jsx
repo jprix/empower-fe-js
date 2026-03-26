@@ -108,6 +108,14 @@ const V1Landing = () => {
 
         <div className="o3-hero-main">
           <div className="o3-hero-content">
+            <div className="o3-hero-lead-desktop">
+              <p className="o3-hero-lead-copy">
+                Empower helps people <em>break free from overwhelming debt</em>{" "}
+                and rebuild their financial future.
+              </p>
+              <div className="o3-hero-lead-divider" />
+            </div>
+
             <div className="o3-hero-badge">
               <span>Debt Relief Specialists</span>
             </div>
