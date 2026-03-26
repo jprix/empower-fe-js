@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Formik, Form, getIn } from "formik";
 import * as Yup from "yup";
 import { getStates } from "../helpers/getStates";
+import TrustpilotWidget from "./TrustpilotWidget";
 
 const debtAmountOptions = [
   "Under $10,000",
@@ -197,14 +198,15 @@ const ApplyModal = () => {
 
               <div className="apply-modal-proof">
                 <div className="apply-modal-proof-card">
-                  <span className="apply-modal-proof-name apply-modal-proof-trust">
-                    Trustpilot
-                  </span>
-                  <div className="apply-modal-proof-stars">★★★★★</div>
-                  <div className="apply-modal-proof-score">4.8 / 5</div>
-                  <div className="apply-modal-proof-meta">
-                    500+ verified reviews
-                  </div>
+                  <TrustpilotWidget
+                    templateId={process.env.NEXT_PUBLIC_TRUSTPILOT_MODAL_TEMPLATE_ID}
+                    height="132px"
+                    theme="dark"
+                    score="4.8"
+                    reviewCount="66 reviews"
+                    fallbackClassName="apply-modal-trustpilot-fallback"
+                    className="apply-modal-trustpilot-widget"
+                  />
                 </div>
                 <div className="apply-modal-proof-card">
                   <span className="apply-modal-proof-name apply-modal-proof-bbb">
@@ -696,8 +698,15 @@ const ApplyModal = () => {
                     {!isSubmitted ? (
                       <div className="apply-modal-mobile-proof">
                         <div className="apply-modal-mobile-pill">
-                          <strong>Trustpilot</strong>
-                          <span>4.8 / 5</span>
+                          <TrustpilotWidget
+                            templateId={process.env.NEXT_PUBLIC_TRUSTPILOT_MODAL_TEMPLATE_ID}
+                            height="88px"
+                            theme="dark"
+                            score="4.8"
+                            reviewCount="66 reviews"
+                            fallbackClassName="apply-modal-mobile-trustpilot"
+                            className="apply-modal-mobile-trustpilot-widget"
+                          />
                         </div>
                         <div className="apply-modal-mobile-pill">
                           <strong>BBB</strong>

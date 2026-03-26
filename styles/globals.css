@@ -281,6 +281,61 @@ body {
   padding: 18px 16px;
 }
 
+.apply-modal-trustpilot-fallback,
+.apply-modal-mobile-trustpilot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-decoration: none;
+  color: inherit;
+}
+
+.apply-modal-mobile-trustpilot {
+  align-items: center;
+}
+
+.apply-modal-trustpilot-widget,
+.apply-modal-mobile-trustpilot-widget {
+  width: 100%;
+}
+
+.trustpilot-fallback-brand {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #00b67a;
+}
+
+.trustpilot-fallback-stars {
+  margin-bottom: 8px;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
+
+.trustpilot-fallback-score {
+  font-family: "Playfair Display", serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1.1;
+}
+
+.trustpilot-fallback-meta {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.apply-modal-mobile-trustpilot .trustpilot-fallback-brand,
+.apply-modal-mobile-trustpilot .trustpilot-fallback-meta,
+.apply-modal-mobile-trustpilot .trustpilot-fallback-stars,
+.apply-modal-mobile-trustpilot .trustpilot-fallback-score {
+  text-align: center;
+}
+
 .apply-modal-proof-name {
   display: inline-block;
   margin-bottom: 6px;

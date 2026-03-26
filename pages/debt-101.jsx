@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import TrustpilotWidget from "../components/TrustpilotWidget";
 
 const faqItems = [
   {
@@ -426,6 +427,34 @@ export default function Debt101Page() {
             </div>
           </div>
         </div>
+
+        <section className="trustSection">
+          <div className="container">
+            <div className="trustPanel reveal">
+              <div className="trustPanelCopy">
+                <span className="sectionEyebrow">Customer Reviews</span>
+                <h2 className="sectionTitle">See what people are saying on Trustpilot</h2>
+                <p className="sectionBody">
+                  Independent reviews help people sanity-check the experience
+                  before they talk with a debt specialist. You can read the full
+                  set directly on Trustpilot.
+                </p>
+              </div>
+
+              <div className="trustPanelWidget">
+                <TrustpilotWidget
+                  templateId={process.env.NEXT_PUBLIC_TRUSTPILOT_DEBT_TEMPLATE_ID}
+                  height="220px"
+                  theme="light"
+                  score="4.8"
+                  reviewCount="66 reviews"
+                  fallbackClassName="trustpilotCardFallback"
+                  className="trustpilotCardWidget"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
 
         <section id="compare" className="toolSection">
           <div className="container">
@@ -1224,6 +1253,62 @@ export default function Debt101Page() {
           font-size: 0.9rem;
         }
 
+        .trustSection {
+          background: var(--cream);
+        }
+
+        .trustPanel {
+          display: grid;
+          grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+          gap: 28px;
+          align-items: center;
+          padding: 28px;
+          background: rgba(255, 255, 255, 0.78);
+          border: 1px solid var(--light-border);
+          border-radius: 18px;
+          box-shadow: 0 18px 50px rgba(6, 14, 28, 0.08);
+        }
+
+        .trustPanelCopy .sectionBody {
+          margin-bottom: 0;
+        }
+
+        .trustPanelWidget {
+          min-width: 0;
+        }
+
+        .trustpilotCardWidget {
+          width: 100%;
+        }
+
+        .trustpilotCardFallback {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 22px;
+          border-radius: 16px;
+          border: 1px solid rgba(232, 193, 74, 0.18);
+          background:
+            radial-gradient(circle at top right, rgba(232, 193, 74, 0.12), transparent 34%),
+            linear-gradient(160deg, rgba(10, 24, 40, 0.96) 0%, rgba(20, 40, 80, 0.94) 100%);
+          color: var(--cream);
+          text-decoration: none;
+          box-shadow: 0 18px 40px rgba(6, 14, 28, 0.22);
+        }
+
+        .trustpilotCardFallback :global(.trustpilot-fallback-brand) {
+          margin-bottom: 10px;
+        }
+
+        .trustpilotCardFallback :global(.trustpilot-fallback-score) {
+          color: var(--cream);
+          font-size: 2.3rem;
+        }
+
+        .trustpilotCardFallback :global(.trustpilot-fallback-meta) {
+          color: rgba(249, 244, 232, 0.72);
+        }
+
         .toolSection,
         .faqSection {
           background: var(--cream);
@@ -1652,7 +1737,8 @@ export default function Debt101Page() {
           .optionHeader,
           .prosCons,
           .criteriaGrid,
-          .factGrid {
+          .factGrid,
+          .trustPanel {
             grid-template-columns: 1fr;
           }
 
