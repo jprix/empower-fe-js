@@ -148,7 +148,8 @@ const ApplyModal = () => {
 
   return (
     <div className="apply-modal-shell">
-      <div className="apply-modal-layout">
+      <div className={`apply-modal-layout${isSubmitted ? " apply-modal-layout-success" : ""}`}>
+          {!isSubmitted ? (
           <aside className="apply-modal-sidebar">
             <div className="apply-modal-sidebar-arc" />
             <div className="apply-modal-sidebar-content">
@@ -250,6 +251,7 @@ const ApplyModal = () => {
               <span>No obligations</span>
             </div>
           </aside>
+          ) : null}
 
           <section className="apply-modal-form-panel">
             <Formik
@@ -309,7 +311,7 @@ const ApplyModal = () => {
 
                 return (
                   <Form className="apply-modal-form" noValidate>
-                    <div className={`apply-modal-progress${isSubmitted ? " apply-modal-progress-dim" : ""}`}>
+                    <div className="apply-modal-progress">
                       <div className="apply-modal-progress-steps">
                         {progressLabels.map((label, index) => {
                           const step = index + 1;
@@ -684,14 +686,23 @@ const ApplyModal = () => {
                       </>
                     ) : (
                       <div className="apply-modal-success">
-                        <div className="apply-modal-success-icon">+</div>
+                        <div className="apply-modal-success-icon">🎉</div>
                         <h3>Application Submitted!</h3>
                         <p>
-                          Thank you. One of our debt specialists will reach out
-                          shortly to review your options with you.
+                          Thank you! One of our debt experts will call you
+                          shortly. Expect a call from a 716 area code.
                         </p>
-                        <a href="tel:8664901617">Call Us: (866) 490-1617</a>
+                        <a href="tel:8664901617">
+                          <span className="apply-modal-success-phone-icon">☎</span>
+                          Call (866) 490-1617
+                        </a>
                         <span>Available Mon-Fri, 8am-8pm ET</span>
+                        <div className="apply-modal-trust-strip">
+                          <span>🔒 SSL</span>
+                          <span>★ 4.8 Trustpilot</span>
+                          <span>★ BBB A+</span>
+                          <span>✅ No Fees</span>
+                        </div>
                       </div>
                     )}
 
