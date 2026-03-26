@@ -149,56 +149,6 @@ const V1Landing = () => {
               </a>
             </div>
           </div>
-
-          <div className="o3-hero-card-wrap">
-            <div className="o3-hero-card">
-              <div className="o3-hero-card-title">Get Your Free Consultation</div>
-              <p className="o3-hero-card-sub">
-                See your options in 2 minutes — no credit check, no obligations.
-              </p>
-
-              <div className="o3-hero-card-field">
-                <label className="o3-hero-card-label">Full Name</label>
-                <input
-                  className="o3-hero-card-input"
-                  type="text"
-                  placeholder="Jane Smith"
-                />
-              </div>
-              <div className="o3-hero-card-field">
-                <label className="o3-hero-card-label">Phone Number</label>
-                <input
-                  className="o3-hero-card-input"
-                  type="tel"
-                  placeholder="(555) 000-0000"
-                />
-              </div>
-              <div className="o3-hero-card-field">
-                <label className="o3-hero-card-label">Total Debt Amount</label>
-                <select className="o3-hero-card-select" defaultValue="">
-                  <option value="" disabled>Select range</option>
-                  <option value="under-10k">Under $10,000</option>
-                  <option value="10k-25k">$10,000 – $25,000</option>
-                  <option value="25k-50k">$25,000 – $50,000</option>
-                  <option value="50k-75k">$50,000 – $75,000</option>
-                  <option value="75k-100k">$75,000 – $100,000</option>
-                  <option value="over-100k">Over $100,000</option>
-                </select>
-              </div>
-
-              <button className="o3-hero-card-btn" onClick={handleCta}>
-                See My Options →
-              </button>
-              <p className="o3-hero-card-note">
-                ✓ No credit impact &nbsp;·&nbsp; ✓ Free &nbsp;·&nbsp; ✓ No obligations
-              </p>
-
-              <div className="o3-hero-card-divider" />
-              <a href="tel:8664901617" className="o3-hero-card-phone">
-                📞 Or call us: <strong>(866) 490-1617</strong>
-              </a>
-            </div>
-          </div>
         </div>
 
         <div className="o3-hero-stats">
