@@ -7,6 +7,10 @@ import "../styles/globals.css";
 import "../styles/option3.css";
 
 function MyApp({ Component, pageProps }) {
+  const disableSiteChrome = Component.disableSiteChrome;
+  const disableSiteHeader = disableSiteChrome || Component.disableSiteHeader;
+  const disableSiteFooter = disableSiteChrome || Component.disableSiteFooter;
+
   return (
     <>
       <Head>
@@ -16,9 +20,9 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Header />
+        {!disableSiteHeader && <Header />}
         <Component {...pageProps} />
-        <Footer />
+        {!disableSiteFooter && <Footer />}
       </ThemeProvider>
     </>
   );
