@@ -829,7 +829,7 @@ export default function Debt101Page() {
 
       <style jsx>{`
         .debt101-page {
-          --ink: #f9f4e8;
+          --ink: #0d1f3c;
           --paper: #0d1f3c;
           --cream: #f9f4e8;
           --accent: var(--gold);
@@ -839,7 +839,10 @@ export default function Debt101Page() {
           --border: rgba(232, 193, 74, 0.14);
           --card: rgba(20, 40, 80, 0.82);
           --card-strong: #142850;
-          background: var(--paper);
+          --light-border: rgba(13, 31, 60, 0.1);
+          --light-muted: #5d6f8d;
+          --light-card: #ffffff;
+          background: var(--cream);
           color: var(--ink);
           font-family: "DM Sans", sans-serif;
         }
@@ -1001,7 +1004,7 @@ export default function Debt101Page() {
 
         section {
           padding: 72px 0;
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--light-border);
         }
 
         .sectionEyebrow {
@@ -1018,7 +1021,7 @@ export default function Debt101Page() {
 
         .sectionBody {
           max-width: 680px;
-          color: var(--muted);
+          color: var(--light-muted);
           font-size: 1.02rem;
           line-height: 1.8;
           margin: 0 0 40px;
@@ -1046,8 +1049,8 @@ export default function Debt101Page() {
         .whoQualifies,
         .pros,
         .cons {
-          background: var(--card);
-          border: 1px solid var(--border);
+          background: var(--light-card);
+          border: 1px solid var(--light-border);
           border-radius: 8px;
         }
 
@@ -1078,7 +1081,7 @@ export default function Debt101Page() {
         .optionInfo p,
         .faqAnswer,
         .disclaimer {
-          color: var(--muted);
+          color: var(--light-muted);
           line-height: 1.75;
         }
 
@@ -1135,14 +1138,14 @@ export default function Debt101Page() {
         .stackMeta span,
         .trendPoint span {
           font-size: 0.8rem;
-          color: var(--muted);
+          color: var(--light-muted);
         }
 
         .barTrack,
         .trendTrack {
           position: relative;
           height: 10px;
-          background: rgba(138, 155, 181, 0.22);
+          background: rgba(13, 31, 60, 0.12);
           border-radius: 999px;
           overflow: hidden;
         }
@@ -1161,7 +1164,7 @@ export default function Debt101Page() {
           display: flex;
           border-radius: 999px;
           overflow: hidden;
-          background: rgba(138, 155, 181, 0.22);
+          background: rgba(13, 31, 60, 0.12);
           margin-top: 8px;
         }
 
@@ -1189,7 +1192,6 @@ export default function Debt101Page() {
         }
 
         .factStrip,
-        .ctaSection,
         .pageFooter {
           background:
             radial-gradient(circle at top, rgba(232, 193, 74, 0.08), transparent 34%),
@@ -1223,17 +1225,13 @@ export default function Debt101Page() {
         }
 
         .toolSection,
-        .optionSectionAlt,
-        .faqSection,
-        .verdictBar {
-          background:
-            radial-gradient(circle at top, rgba(232, 193, 74, 0.04), transparent 36%),
-            #0f2445;
+        .faqSection {
+          background: var(--cream);
         }
 
         .toolWrap {
-          background: var(--card);
-          border: 1px solid var(--border);
+          background: var(--light-card);
+          border: 1px solid var(--light-border);
           border-radius: 12px;
           overflow: hidden;
           box-shadow: 0 18px 50px rgba(6, 14, 28, 0.28);
@@ -1259,7 +1257,7 @@ export default function Debt101Page() {
         .toolInputs {
           grid-template-columns: repeat(3, minmax(0, 1fr));
           padding: 28px 32px;
-          border-bottom: 1px solid var(--border);
+          border-bottom: 1px solid var(--light-border);
         }
 
         .inputGroup label,
@@ -1272,7 +1270,7 @@ export default function Debt101Page() {
           font-weight: 700;
           letter-spacing: 0.08em;
           text-transform: uppercase;
-          color: var(--muted);
+          color: var(--light-muted);
         }
 
         .inputGroup input[type="range"] {
@@ -1299,13 +1297,13 @@ export default function Debt101Page() {
           justify-content: space-between;
           margin-top: 8px;
           font-size: 0.8rem;
-          color: var(--muted);
+          color: var(--light-muted);
         }
 
         .sliderVal .current {
           font-size: 0.96rem;
           font-weight: 700;
-          color: var(--cream);
+          color: var(--ink);
         }
 
         .optionCards {
@@ -1314,7 +1312,7 @@ export default function Debt101Page() {
 
         .optionCard {
           padding: 28px 24px;
-          border-right: 1px solid var(--border);
+          border-right: 1px solid var(--light-border);
         }
 
         .optionCard:last-child {
@@ -1344,7 +1342,7 @@ export default function Debt101Page() {
         }
 
         .badgeAlt {
-          color: var(--cream);
+          color: var(--ink);
           border: 1px solid rgba(138, 155, 181, 0.28);
           background: rgba(138, 155, 181, 0.12);
         }
@@ -1356,8 +1354,8 @@ export default function Debt101Page() {
         }
 
         .badgeNeutral {
-          color: var(--muted);
-          border: 1px solid var(--border);
+          color: var(--light-muted);
+          border: 1px solid var(--light-border);
           background: rgba(138, 155, 181, 0.08);
         }
 
@@ -1369,7 +1367,7 @@ export default function Debt101Page() {
         }
 
         .optionSub {
-          color: var(--muted);
+          color: var(--light-muted);
           font-size: 0.86rem;
           margin-bottom: 16px;
         }
@@ -1380,14 +1378,14 @@ export default function Debt101Page() {
 
         .fitBarLabel {
           font-size: 0.72rem;
-          color: var(--muted);
+          color: var(--light-muted);
           margin-bottom: 6px;
         }
 
         .fitBar {
           height: 6px;
           border-radius: 999px;
-          background: rgba(138, 155, 181, 0.2);
+          background: rgba(13, 31, 60, 0.12);
           overflow: hidden;
         }
 
@@ -1405,11 +1403,11 @@ export default function Debt101Page() {
           justify-content: space-between;
           gap: 12px;
           padding: 8px 0;
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--light-border);
         }
 
         .optionRowLabel {
-          color: var(--muted);
+          color: var(--light-muted);
         }
 
         .optionRowValue {
@@ -1430,12 +1428,13 @@ export default function Debt101Page() {
         }
 
         .tone-neutral {
-          color: var(--muted);
+          color: var(--light-muted);
         }
 
         .verdictBar {
+          background: rgba(232, 193, 74, 0.08);
           padding: 20px 32px;
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--light-border);
           line-height: 1.7;
           font-size: 0.95rem;
         }
@@ -1487,7 +1486,7 @@ export default function Debt101Page() {
           list-style: none;
           margin: 0;
           padding: 0;
-          color: var(--muted);
+          color: var(--light-muted);
           font-size: 0.92rem;
         }
 
@@ -1525,15 +1524,15 @@ export default function Debt101Page() {
         }
 
         .criteriaItem {
-          background: rgba(13, 31, 60, 0.45);
-          border: 1px solid var(--border);
+          background: var(--light-card);
+          border: 1px solid var(--light-border);
           border-radius: 6px;
           padding: 14px;
         }
 
         .criteriaVal {
           font-weight: 700;
-          color: var(--cream);
+          color: var(--ink);
           line-height: 1.5;
         }
 
@@ -1542,7 +1541,7 @@ export default function Debt101Page() {
         }
 
         .faqItem {
-          border-bottom: 1px solid var(--border);
+          border-bottom: 1px solid var(--light-border);
         }
 
         .faqQuestion {
@@ -1553,7 +1552,7 @@ export default function Debt101Page() {
           padding: 20px 0;
           cursor: pointer;
           font: inherit;
-          color: var(--cream);
+          color: var(--ink);
           font-size: 1rem;
           font-weight: 700;
           display: flex;
@@ -1563,7 +1562,7 @@ export default function Debt101Page() {
 
         .faqQuestion::after {
           content: "+";
-          color: var(--muted);
+          color: var(--light-muted);
           font-size: 1.3rem;
           line-height: 1;
           transition: transform 0.2s ease;
@@ -1580,6 +1579,13 @@ export default function Debt101Page() {
 
         .faqAnswer.open {
           display: block;
+        }
+
+        .ctaSection {
+          background:
+            radial-gradient(circle at top, rgba(232, 193, 74, 0.08), transparent 34%),
+            linear-gradient(160deg, #081424 0%, #0b1f3f 55%, #102a52 100%);
+          color: var(--cream);
         }
 
         .ctaSection {
