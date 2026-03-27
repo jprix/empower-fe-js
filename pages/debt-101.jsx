@@ -830,7 +830,7 @@ export default function Debt101Page() {
             A free consultation can help you compare real next steps based on
             your debt, credit profile, and income.
           </p>
-          <Link href="/contact" className="primaryButton">
+          <Link href="/apply-now" className="primaryButton">
             Get My Free Debt Analysis
           </Link>
           <div className="trustRow">

@@ -354,7 +354,7 @@ export default function ContactPage() {
                 <div className="o3-benefit-icon">{benefit.icon}</div>
                 <h3 className="o3-benefit-title">{benefit.title}</h3>
                 <p className="o3-benefit-desc">{benefit.description}</p>
-                <a href="/contact" className="o3-benefit-link">
+                <a href="/apply-now" className="o3-benefit-link">
                   Start the conversation →
                 </a>
               </div>
