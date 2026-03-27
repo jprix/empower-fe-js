@@ -133,9 +133,13 @@ const initialValues = {
   state: "",
 };
 
+const getDebtTypeLabel = (value) =>
+  debtTypeOptions.find((option) => option.value === value)?.label ?? value;
+
 const ApplyModal = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedValues, setSubmittedValues] = useState(null);
   const states = useMemo(() => getStates(), []);
 
   const markStepTouched = (setTouched, touched, step) => {
@@ -243,6 +247,10 @@ const ApplyModal = () => {
               onSubmit={async (values, { setSubmitting }) => {
                 try {
                   await fullSchema.validate(values, { abortEarly: false });
+                  setSubmittedValues({
+                    ...values,
+                    debtTypes: [...values.debtTypes],
+                  });
                   console.log("Form Submitted Successfully:", values);
                   setIsSubmitted(true);
                 } catch (error) {
@@ -263,6 +271,65 @@ const ApplyModal = () => {
                 handleChange,
                 handleBlur,
               }) => {
+                const summaryValues = submittedValues ?? values;
+                const formattedBirthDate = [
+                  summaryValues.birthMonth,
+                  summaryValues.birthDay,
+                  summaryValues.birthYear,
+                ]
+                  .filter(Boolean)
+                  .join(" ");
+                const formattedDebtTypes = summaryValues.debtTypes.length
+                  ? summaryValues.debtTypes.map(getDebtTypeLabel).join(", ")
+                  : "Not provided";
+                const formattedState =
+                  states.find((state) => state.value === summaryValues.state)
+                    ?.label ?? summaryValues.state ?? "Not provided";
+                const summaryItems = [
+                  {
+                    label: "Debt Amount",
+                    value: summaryValues.debtAmount || "Not provided",
+                  },
+                  {
+                    label: "Debt Types",
+                    value: formattedDebtTypes,
+                  },
+                  {
+                    label: "Full Name",
+                    value:
+                      `${summaryValues.firstName} ${summaryValues.lastName}`.trim() ||
+                      "Not provided",
+                  },
+                  {
+                    label: "Phone",
+                    value: summaryValues.phone || "Not provided",
+                  },
+                  {
+                    label: "Email",
+                    value: summaryValues.email || "Not provided",
+                  },
+                  {
+                    label: "Date of Birth",
+                    value: formattedBirthDate || "Not provided",
+                  },
+                  {
+                    label: "Street Address",
+                    value: summaryValues.address || "Not provided",
+                  },
+                  {
+                    label: "City",
+                    value: summaryValues.city || "Not provided",
+                  },
+                  {
+                    label: "State",
+                    value: formattedState,
+                  },
+                  {
+                    label: "ZIP Code",
+                    value: summaryValues.zipCode || "Not provided",
+                  },
+                ];
+
                 const goToNextStep = async () => {
                   const stepErrors = await validateForm();
                   const hasStepErrors = stepFieldMap[currentStep].some((field) =>
@@ -666,7 +733,14 @@ const ApplyModal = () => {
                       </>
                     ) : (
                       <div className="apply-modal-success">
-                        <div className="apply-modal-success-icon">🎉</div>
+                        <div className="apply-modal-success-icon">
+                          <span className="apply-modal-success-icon-core">
+                            ✓
+                          </span>
+                        </div>
+                        <div className="apply-modal-success-kicker">
+                          Empower Financial Network
+                        </div>
                         <h3>Application Submitted!</h3>
                         <p>
                           Thank you! One of our debt experts will call you
@@ -677,6 +751,29 @@ const ApplyModal = () => {
                           Call (866) 490-1617
                         </a>
                         <span>Available Mon-Fri, 8am-8pm ET</span>
+                        <div className="apply-modal-summary">
+                          <div className="apply-modal-summary-head">
+                            <strong>Application Summary</strong>
+                            <span>
+                              Here&apos;s the information we received.
+                            </span>
+                          </div>
+                          <div className="apply-modal-summary-grid">
+                            {summaryItems.map((item) => (
+                              <div
+                                key={item.label}
+                                className="apply-modal-summary-item"
+                              >
+                                <div className="apply-modal-summary-label">
+                                  {item.label}
+                                </div>
+                                <div className="apply-modal-summary-value">
+                                  {item.value}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                         <div className="apply-modal-trust-strip">
                           <span>🔒 SSL</span>
                           <span>★ 4.8 Trustpilot</span>
