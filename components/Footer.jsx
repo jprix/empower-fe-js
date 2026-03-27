@@ -36,7 +36,7 @@ const Footer = () => {
           <a href="tel:8664901617">(866) 490-1617</a>
           <a href="mailto:Marketing@EmpowerFN.com">Marketing@EmpowerFN.com</a>
           <Link
-            href="/contact"
+            href="/apply-now"
             style={{ marginTop: "20px" }}
             className="o3-btn-primary"
           >
