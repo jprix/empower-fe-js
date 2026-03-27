@@ -223,26 +223,6 @@ const ApplyModal = () => {
                 </div>
               </div>
 
-              <div className="apply-modal-testimonials">
-                <div className="apply-modal-testimonial">
-                  <div className="apply-modal-testimonial-stars">★★★★★</div>
-                  <p>
-                    &quot;Empower made everything feel clear and manageable. My
-                    monthly payments dropped in a way I could actually breathe
-                    again.&quot;
-                  </p>
-                  <span>Verified customer review</span>
-                </div>
-                <div className="apply-modal-testimonial">
-                  <div className="apply-modal-testimonial-stars">★★★★★</div>
-                  <p>
-                    &quot;The application was quick, pressure-free, and I heard
-                    back fast. It felt like real help instead of another sales
-                    pitch.&quot;
-                  </p>
-                  <span>Verified customer review</span>
-                </div>
-              </div>
             </div>
 
             <div className="apply-modal-security">
