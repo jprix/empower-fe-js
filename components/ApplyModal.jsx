@@ -255,7 +255,15 @@ const ApplyModal = () => {
                     ? values.debtTypes.map(getDebtTypeLabel).join(", ")
                     : "Not provided";
                   const sourceUrl =
-                    typeof window !== "undefined" ? window.location.href : "";
+                    typeof document !== "undefined" && document.referrer
+                      ? document.referrer
+                      : typeof window !== "undefined"
+                        ? window.location.href
+                        : "";
+                  const searchParams =
+                    typeof window !== "undefined"
+                      ? new URLSearchParams(window.location.search)
+                      : new URLSearchParams();
                   const message = `Apply modal submission. Debt amount: ${values.debtAmount}. Debt types: ${debtTypesSummary}.`;
 
                   const response = await fetch("/api/contact", {
@@ -274,7 +282,12 @@ const ApplyModal = () => {
                       birthMonth: values.birthMonth,
                       birthDay: values.birthDay,
                       birthYear: values.birthYear,
+                      vendorId: searchParams.get("source_id") || "",
+                      vendorSubId: searchParams.get("sub3") || "",
                       leadSource: "Test",
+                      utmSource: searchParams.get("sub4") || "",
+                      utmCampaign: searchParams.get("sub1") || "",
+                      utmTerm: searchParams.get("sub2") || "",
                       message,
                       sourceUrl,
                     }),

@@ -209,11 +209,16 @@ export default async function handler(req, res) {
 
   const sourceUrl = getUrlFromRequest(req);
   const trackingParams = getTrackingParams(req, sourceUrl);
+  const normalizedLeadSource = leadSource || "Test";
+  const isTestLead =
+    typeof normalizedLeadSource === "string" &&
+    normalizedLeadSource.toLowerCase() === "test";
   const payload = {
     offerCode: null,
     brand: "Empower",
-    vendorId: vendorId || trackingParams.sourceId,
-    vendorSubId: vendorSubId || trackingParams.sub3,
+    vendorId: vendorId || trackingParams.sourceId || (isTestLead ? "test" : ""),
+    vendorSubId:
+      vendorSubId || trackingParams.sub3 || (isTestLead ? "test" : ""),
     trustedCertificate:
       trustedCertificate || process.env.LMS_TRUSTED_CERTIFICATE_URL || "",
     firstName: normalizedName.firstName,
@@ -227,10 +232,11 @@ export default async function handler(req, res) {
     email: String(email).trim(),
     estimatedDebt: normalizeDebtAmount(estimatedDebt ?? debtAmount),
     dob: formatDob({ dob, birthMonth, birthDay, birthYear }),
-    leadSource: leadSource || "Test",
-    utmSource: utmSource || trackingParams.sub4,
-    utmCampaign: utmCampaign || trackingParams.sub1,
-    utmTerm: utmTerm || trackingParams.sub2,
+    leadSource: normalizedLeadSource,
+    utmSource: utmSource || trackingParams.sub4 || (isTestLead ? "test" : ""),
+    utmCampaign:
+      utmCampaign || trackingParams.sub1 || (isTestLead ? "test" : ""),
+    utmTerm: utmTerm || trackingParams.sub2 || (isTestLead ? "test" : ""),
     sourceIp: getSourceIp(req),
     sourceUrl,
   };
