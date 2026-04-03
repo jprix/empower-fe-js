@@ -140,6 +140,7 @@ const ApplyModal = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedValues, setSubmittedValues] = useState(null);
+  const [submitError, setSubmitError] = useState("");
   const states = useMemo(() => getStates(), []);
 
   const markStepTouched = (setTouched, touched, step) => {
@@ -247,14 +248,58 @@ const ApplyModal = () => {
               onSubmit={async (values, { setSubmitting }) => {
                 try {
                   await fullSchema.validate(values, { abortEarly: false });
+
+                  setSubmitError("");
+
+                  const debtTypesSummary = values.debtTypes.length
+                    ? values.debtTypes.map(getDebtTypeLabel).join(", ")
+                    : "Not provided";
+                  const sourceUrl =
+                    typeof window !== "undefined" ? window.location.href : "";
+                  const message = `Apply modal submission. Debt amount: ${values.debtAmount}. Debt types: ${debtTypesSummary}.`;
+
+                  const response = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      firstName: values.firstName,
+                      lastName: values.lastName,
+                      phone: values.phone,
+                      email: values.email,
+                      debtAmount: values.debtAmount,
+                      address: values.address,
+                      city: values.city,
+                      state: values.state,
+                      zipCode: values.zipCode,
+                      birthMonth: values.birthMonth,
+                      birthDay: values.birthDay,
+                      birthYear: values.birthYear,
+                      leadSource: "Test",
+                      message,
+                      sourceUrl,
+                    }),
+                  });
+
+                  const data = await response.json();
+
+                  if (!response.ok) {
+                    throw new Error(
+                      data.message || "Unable to submit your application."
+                    );
+                  }
+
                   setSubmittedValues({
                     ...values,
                     debtTypes: [...values.debtTypes],
                   });
-                  console.log("Form Submitted Successfully:", values);
                   setIsSubmitted(true);
                 } catch (error) {
-                  console.error("Form validation failed:", error);
+                  console.error("Application submission failed:", error);
+                  setSubmitError(
+                    error instanceof Error
+                      ? error.message
+                      : "Unable to submit your application."
+                  );
                 } finally {
                   setSubmitting(false);
                 }
@@ -708,6 +753,12 @@ const ApplyModal = () => {
                               phone or text. Consent is not required as a
                               condition of service.
                             </div>
+
+                            {submitError ? (
+                              <div className="apply-modal-error">
+                                {submitError}
+                              </div>
+                            ) : null}
 
                             <button
                               type="submit"

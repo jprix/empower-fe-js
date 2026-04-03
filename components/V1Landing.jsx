@@ -339,7 +339,6 @@ const V1Landing = () => {
         </div>
       </section>
 
-      {/* ─── SAVINGS CALCULATOR ─── */}
       <section className="o3-calculator">
         <div className="o3-calc-inner">
           <div className="o3-calc-header reveal">
