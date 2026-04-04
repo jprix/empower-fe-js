@@ -1,4 +1,5 @@
 import { ThemeProvider, CssBaseline } from "@mui/material";
+import { Analytics } from "@vercel/analytics/next";
 import theme from "../theme";
 import Head from "next/head";
 import Header from "../components/Header";
@@ -22,6 +23,7 @@ function MyApp({ Component, pageProps }) {
         {!disableSiteHeader && <Header />}
         <Component {...pageProps} />
         {!disableSiteFooter && <Footer />}
+        <Analytics />
       </ThemeProvider>
     </>
   );

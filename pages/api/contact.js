@@ -37,9 +37,45 @@ function normalizeDebtAmount(value) {
     return null;
   }
 
+  const normalizedValue = value.trim().toLowerCase();
+
+  const rangeMap = {
+    "under $10,000": 10000,
+    "$10,000 - $20,000": 15000,
+    "$20,000 - $35,000": 27500,
+    "$35,000 - $50,000": 42500,
+    "over $50,000": 50000,
+  };
+
+  if (rangeMap[normalizedValue] != null) {
+    return rangeMap[normalizedValue];
+  }
+
   const digits = value.replace(/[^\d]/g, "");
 
   return digits ? Number(digits) : null;
+}
+
+function normalizeNullableInt(value) {
+  if (typeof value === "number" && Number.isInteger(value)) {
+    return value;
+  }
+
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const digits = trimmed.replace(/[^\d-]/g, "");
+  if (!digits || !/^-?\d+$/.test(digits)) {
+    return null;
+  }
+
+  return Number(digits);
 }
 
 function formatDob({ dob, birthMonth, birthDay, birthYear }) {
@@ -216,9 +252,8 @@ export default async function handler(req, res) {
   const payload = {
     offerCode: null,
     brand: "Empower",
-    vendorId: vendorId || trackingParams.sourceId || (isTestLead ? "test" : ""),
-    vendorSubId:
-      vendorSubId || trackingParams.sub3 || (isTestLead ? "test" : ""),
+    vendorId: normalizeNullableInt(vendorId ?? trackingParams.sourceId),
+    vendorSubId: normalizeNullableInt(vendorSubId ?? trackingParams.sub3),
     trustedCertificate:
       trustedCertificate || process.env.LMS_TRUSTED_CERTIFICATE_URL || "",
     firstName: normalizedName.firstName,
@@ -266,11 +301,12 @@ export default async function handler(req, res) {
       responseData = { raw: responseText };
     }
 
-    console.log("LMS response:", {
-      status: upstreamResponse.status,
-      ok: upstreamResponse.ok,
-      body: responseData,
-    });
+    console.log("LMS response:", JSON.stringify({
+  status: upstreamResponse.status,
+  ok: upstreamResponse.ok,
+  body: responseData,
+}, null, 2));
+
 
     if (!upstreamResponse.ok) {
       return res.status(upstreamResponse.status).json({

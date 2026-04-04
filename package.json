@@ -17,6 +17,7 @@
     "@mui/material": "^6.0.2",
     "@sendgrid/mail": "^8.1.3",
     "@tanstack/react-query": "^5.56.2",
+    "@vercel/analytics": "^2.0.1",
     "baseline-browser-mapping": "^2.10.7",
     "caniuse-lite": "^1.0.30001778",
     "eslint": "8.57.0",
